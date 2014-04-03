@@ -22,6 +22,7 @@ import com.liufuya.core.bean.User;
 
 /**
  * 作为接受页面请求的控制器
+ * 测试框架时建立的简单  登录测试类
  * @author lililiu
  *
  */
