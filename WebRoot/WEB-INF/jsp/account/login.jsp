@@ -45,6 +45,11 @@
 	<link href='${base}/css/jquery.iphone.toggle.css' rel='stylesheet'>
 	<link href='${base}/css/opa-icons.css' rel='stylesheet'>
 	<link href='${base}/css/uploadify.css' rel='stylesheet'>
+	
+	<!-- messenger css... -->
+	<link href="${base}/build/css/messenger.css" rel="stylesheet" type="text/css" >
+	<link href="${base}/build/css/messenger-spinner.css" rel="stylesheet" type="text/css">
+	<link href="${base}/build/css/messenger-theme-air.css" rel="stylesheet" type="text/css">
 
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
@@ -82,13 +87,13 @@
 						<fieldset>
 							<div class="input-prepend" title="Username" data-rel="tooltip">
 								<span class="add-on"><i class="icon-user"></i></span>
-								<input autofocus class="input-large span10" name="username" id="username" type="text" value="admin" />
+								<input autofocus class="input-large span10" name="loginName" id="login_name"  type="text" value="admin" />
 							</div>
 							<div class="clearfix"></div>
 
 							<div class="input-prepend" title="Password" data-rel="tooltip">
 								<span class="add-on"><i class="icon-lock"></i></span>
-								<input class="input-large span10" name="password" id="password" type="password" value="admin" />
+								<input class="input-large span10" name="logPwd" id="login_password" type="password" value="admin" />
 							</div>
 							<div class="clearfix"></div>
 							<!--  
@@ -99,7 +104,7 @@
 							-->
 							
 							<p class="center span5">
-							<button type="submit" class="btn btn-primary">登录系统</button>
+							<button type="submit" id="login" class="btn btn-primary">登录系统</button>
 							</p>
 						</fieldset>
 					</form>
@@ -182,7 +187,54 @@
 	<script src="${base}/js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="${base}/js/charisma.js"></script>
-	
+
+
+<!-- Message js lib -->	
+<script type="text/javascript" src="${base}/build/js/messenger.js"></script>
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						//选择好弹出框的样式
+						$._messengerDefaults = {
+							extraClasses : 'messenger-fixed messenger-theme-air messenger-on-top'
+						};
+
+						//$.globalMessenger().post("请输入用户名和密码!");
+						$.globalMessenger().post({
+							message : '请输入用户名和密码!',
+							type : 'error',
+							hideAfter : 6,
+							showCloseButton : true
+						});
+
+						$("#login").click(function() {
+							var name = $("#login_name").val();
+							var pwd = $("#login_password").val();
+							if (name == "") {
+								$.globalMessenger().post({
+									message : "用户名不能为空!",
+									hideAfter : 4,
+									type : 'error',
+								});
+								$("#loginName").focus();
+								return false;
+							}
+							if (pwd == "") {
+								$.globalMessenger().post({
+									message : "密码不能为空!",
+									hideAfter : 4,
+									type : 'error',
+								});
+								$("#login_password").focus();
+								return false;
+							}
+							return true;
+						});
+					});
+</script>
+		
+		
 		
 </body>
 </html>

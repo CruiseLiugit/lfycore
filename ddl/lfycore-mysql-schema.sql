@@ -1,6 +1,7 @@
 CREATE DATABASE lfycore;
 USE lfycore;
 
+--test DB
 --DROP INDEX IF EXISTS productCat;
 
 DROP TABLE IF EXISTS tb_user;
