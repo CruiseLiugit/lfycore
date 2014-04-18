@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
   <jsp:include page="./header.jsp"></jsp:include>
+  
 <body>
 	<!-- topbar starts -->
 	<jsp:include page="./top.jsp"></jsp:include>
@@ -379,7 +380,5 @@
 		<jsp:include page="./footer.jsp"></jsp:include>
 	</div><!--/.fluid-container-->
 
-	<!-- external javascript -->
-	<jsp:include page="./bottom.jsp"></jsp:include>	
 </body>
 </html>
