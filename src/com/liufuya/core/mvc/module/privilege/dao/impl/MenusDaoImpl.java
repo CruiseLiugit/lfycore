@@ -29,6 +29,7 @@ import com.liufuya.core.mvc.module.privilege.model.SysUser;
 @IocBean
 public class MenusDaoImpl extends BasicDao {
 
+	
 	/**
 	 * 获取当前用户拥有的菜单
 	 */

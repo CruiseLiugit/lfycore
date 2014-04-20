@@ -6,6 +6,8 @@ package com.liufuya.common;
  */
 public class Constants {
 	
+	
+	
 	//分页每页最大条数
 	public static final int PAGE_SIZE = 10;
 	

@@ -8,6 +8,7 @@ import java.util.List;
  *
  */
 public class Tree implements java.io.Serializable{
+	
 	private static final long serialVersionUID = 1L;
 	private String id;//标识
 	private String text;//显示内容

@@ -54,19 +54,14 @@ public class SysUserDaoImpl extends BasicDao {
 	/**
 	 * 根据usercode修改用户登陆密码
 	 * 
+	 * editPassword.jsp 页面中的 ，真实姓名、密码、邮箱、电话 四个内容进行修改
+	 * 
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean updateLoginPwd(Map<String, Object> map) throws Exception {
-		// update SYS_USER set LOG_PWD=#{newLoginPwd} where
-		// USER_CODE=#{userCode} and STATUS='1'
-		boolean flag = update(
-				SysUser.class,
-				Chain.make("logPwd", map.get("newLoginPwd")),
-				Cnd.where("userCode", "=", map.get("userCode")).and("status",
-						"=", 1));
-		return flag;
+	public boolean updateLoginPwd(SysUser sysUser) throws Exception {
+		return this.update(sysUser);
 	}
 
 	/**

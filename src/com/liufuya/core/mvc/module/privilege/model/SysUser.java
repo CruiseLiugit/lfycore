@@ -40,9 +40,11 @@ public class SysUser implements Serializable{
 	@Column("user_phone")
 	private String userPhone;
 
+	//用户类型，1系统用户 2 卖家用户
 	@Column("user_type")
 	private String userType;
 
+	//卖家编码
 	@Column("seller_code")
 	private String sellerCode;
 

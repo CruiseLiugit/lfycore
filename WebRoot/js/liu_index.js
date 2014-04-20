@@ -105,13 +105,6 @@ function InitLeftMenu(contextPath) {
 	});
 
 
-
-
-
-	//选中第一个
-	//var panels = $('#nav').accordion('panels');
-	//var t = panels[0].panel('options').title;
-    //$('#nav').accordion('select', t);
 }
 
 

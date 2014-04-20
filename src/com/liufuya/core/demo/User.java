@@ -6,7 +6,6 @@ import org.nutz.dao.entity.annotation.Id;
 
 @Table("tb_user")
 public class User {
-
 	@Id
 	private long id;
 	

@@ -18,6 +18,7 @@ import org.nutz.dao.entity.annotation.Table;
  */
 @Table("sys_menus")
 public class Menus implements Serializable{ 
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id

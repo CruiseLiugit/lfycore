@@ -27,6 +27,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
  */
 @IocBean
 public class BasicDao {
+	
 	// 注入 dao.js 中声明的 数据库连接类
 	@Inject
 	protected Dao dao;

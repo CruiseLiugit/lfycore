@@ -27,45 +27,25 @@ import com.liufuya.common.base.MD5;
 import com.liufuya.core.mvc.module.privilege.model.SysUser;
 import com.liufuya.core.mvc.module.privilege.service.impl.SysUserServiceImpl;
 
-
 /**
  * 用户登录、退出、登录用户密码修改
  * 
- * @author wubin
+ * @author 刘立立
  * 
  */
 @IocBean
 public class SysUserAction {
 	private static final Log log = Logs.get();
-	
+
 	@Inject("refer:sysUserServiceImpl")
 	public SysUserServiceImpl sysUserService;
-	
-	//private Producer captchaProducer;
-	
-	/**
-	 * 项目启动时的验证，搭建项目框架使用，返回当前系统时间
-	 * @return
-	 */
-	@At("/ping") 
-	public Object ping(){
-		log.debug("====>测试user 模块 sysUserService ="+sysUserService);
-		return new Date();
-	}
-	
-	/**
-	 * 进入登陆页面， 可以使用 View 对象控制返回到哪个视图路径
-	 */
-	@At("/")
-	@Ok("jsp:jsp.account.login")
-	public void index() {
-	}
-	
+
+	// ************************************************************************************
+	// 用户登录、退出 模块
+	// 2014-04-14
 	/**
 	 * 登陆
 	 * 
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@At("/login")
@@ -79,72 +59,72 @@ public class SysUserAction {
 
 		name = name.trim().intern();
 		passwd = passwd.trim().intern();
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("loginName", name);
 		map.put("loginPwd", new MD5().getMD5ofStr(passwd));
-		
+
 		SysUser sysUser = sysUserService.findSysUser(map);
 		if (sysUser != null) {// 用户存在
 			HttpSession session = req.getSession();
 			session.setAttribute("loginName", name);
 			session.setAttribute(Constants.CURRENT_LOGIN_USER, sysUser);
-		
+
 			return new JspView("jsp.index");
-			//return new ViewWrapper(new JspView("admin.main"), m);
-			
-			//登录日志
-			/*String type = "1";// 登陆
-			try {
-				String ip = BaseController.getIpAddr(request);
-				//处理登录日志
-				int i = sysUserService.insertLoginLog(sysUser, ip, type);
-				if (i < 1) {
-					result = 1;
-				}
-			} catch (Exception e) {
-				logger.error("登陆日记插入失败!");
-			}*/
+			// return new ViewWrapper(new JspView("admin.main"), m);
+
+			// 登录日志
+			/*
+			 * String type = "1";// 登陆 try { String ip =
+			 * BaseController.getIpAddr(request); //处理登录日志 int i =
+			 * sysUserService.insertLoginLog(sysUser, ip, type); if (i < 1) {
+			 * result = 1; } } catch (Exception e) { logger.error("登陆日记插入失败!");
+			 * }
+			 */
 		} else {
 			req.setAttribute("error", "用户名或者密码错误！");
 			return new JspView("jsp.account.login");
 		}
 	}
-	
-	
+
 	/**
 	 * 退出系统
+	 * 
 	 * @param req
 	 */
 	@At("/logout")
 	@Ok("jsp:jsp.account.login")
-	public void logout(HttpServletRequest req,HttpServletResponse response) {
+	public void logout(HttpServletRequest req, HttpServletResponse response) {
 		HttpSession session = req.getSession();
-		session.removeAttribute("loginName");
-		session.removeAttribute(Constants.CURRENT_LOGIN_USER);
+		// session.removeAttribute("loginName");
+		// session.removeAttribute(Constants.CURRENT_LOGIN_USER);
 		session.invalidate();
 		try {
 			String ip = BaseController.getIpAddr(req);
-			//暂时不做
-			//sysUserService.insertLoginLog(sysUser, ip, type);
+			// 暂时不做
+			// sysUserService.insertLoginLog(sysUser, ip, type);
 		} catch (Exception e) {
 			log.error("退出日记插入失败!");
 		}
-		
-		
+
 	}
-	
-	
+
+	// ************************************************************************************
+	// 登录时，动态取出当前用户菜单、头部获取当前登录用户 姓名 功能
+	// 2014-04-18
 	/**
 	 * 异步加载主页左边树结构
+	 * 
 	 * @param request
 	 * @param response
 	 */
 	@At("/userloadMenus")
-	public void loadMenus(HttpServletRequest request,HttpServletResponse response) {
+	public void loadMenus(HttpServletRequest request,
+			HttpServletResponse response) {
 		HttpSession session = request.getSession();
-		SysUser sysUser = (SysUser) session.getAttribute(Constants.CURRENT_LOGIN_USER);
-		String menuS= sysUserService.loadMenus(sysUser);
+		SysUser sysUser = (SysUser) session
+				.getAttribute(Constants.CURRENT_LOGIN_USER);
+		String menuS = sysUserService.loadMenus(sysUser);
 		log.info("==============================");
 		log.info(menuS);
 		log.info("==============================");
@@ -157,7 +137,102 @@ public class SysUserAction {
 			log.error("处理json数据报错：" + e.getStackTrace());
 		}
 	}
-	
-	
-	
+
+	/**
+	 * 异步加载头部显示
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@At("/usertopLoginName")
+	public void topLoginName(HttpServletRequest request,
+			HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		String topLoginName = (String) session.getAttribute("loginName");
+		// log.info("登录名为 :"+topLoginName);
+		try {
+			// 解决返回值为 XMLDocument 问题
+			// response.setContentType("text/html");
+
+			PrintWriter pw = response.getWriter();
+			pw.println(topLoginName);
+			pw.flush();
+			pw.close();
+		} catch (IOException e) {
+			log.error("异步加载头部显示失败!");
+		}
+	}
+
+	// ************************************************************************************
+	// 修改账户信息模块
+	// 2014-04-19
+	/**
+	 * 跳转到 修改密码页面
+	 */
+	@At("/toEditPwd")
+	@Ok("jsp:jsp.account.editPassword")
+	public void toEditPwd() {
+	}
+
+	/**
+	 * 修改个人账户信息功能，前验证旧密码是否正确
+	 */
+	@At("/userCheckOldPwd")
+	@Ok("json")
+	public String userCheckOldPwd(@Param("oldname") String oldname,
+			@Param("oldpwd") String oldpwd, HttpSession session) {
+		// 1 从session 中取出当前登录 用户对象
+		SysUser sysUser = (SysUser) session
+				.getAttribute(Constants.CURRENT_LOGIN_USER);
+		// 2 对比 界面 editPasword.jsp 传递过来的密码，要进行 MD5加密
+		oldname = oldname.trim().intern();
+		oldpwd = oldpwd.trim().intern();
+		log.info("oldname ="+oldname +" , oldpwd ="+oldpwd);
+		
+		String dbpwd = new MD5().getMD5ofStr(oldpwd);
+		// 3 与当前 Session 中保存的进行对比
+		if (oldname.equals(sysUser.getLoginName())
+				&& dbpwd.equals(sysUser.getLogPwd())) {
+			// 返回验证后的状态
+			return "{\"status\":200}";
+		} else {
+			return "{\"status\":201}";
+		}
+	}
+
+	/**
+	 * 修改个人账户信息功能
+	 */
+	@At("/usertopEditPwd")
+	@Ok("jsp:jsp.index")
+	public void userTopEditPwd(@Param("user_name") String username,
+			@Param("login_newpwd") String newpwd, @Param("email") String email,
+			@Param("phone") String phone, HttpSession session) {
+		// 1 从session 中取出当前登录 用户对象
+		SysUser sysUser = (SysUser) session
+				.getAttribute(Constants.CURRENT_LOGIN_USER);
+		// 2 根据界面 editPasword.jsp 更新的数据，修改这个对象中的数据
+		username = username.trim().intern();
+		newpwd = newpwd.trim().intern();
+		email = email.trim().intern();
+		phone = phone.trim().intern();
+		
+		//这里要做一个 邮箱、电话的正则表达验证。前端没有做好
+		sysUser.setUserName(username);
+		sysUser.setLogPwd(new MD5().getMD5ofStr(newpwd));
+		sysUser.setEmail(email);
+		sysUser.setUserPhone(phone);
+		
+		// 3 调用 服务层方法，修改数据库
+		try {
+			boolean flag = sysUserService.updateLoginPwd(sysUser);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	}
+
 }

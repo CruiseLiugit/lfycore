@@ -197,14 +197,15 @@
 					function() {
 						//选择好弹出框的样式
 						$._messengerDefaults = {
-							extraClasses : 'messenger-fixed messenger-theme-air messenger-on-top'
+							extraClasses : 'messenger-fixed messenger-on-bottom messenger-on-right',
+							theme:'air'
 						};
 
 						//$.globalMessenger().post("请输入用户名和密码!");
 						$.globalMessenger().post({
 							message : '请输入用户名和密码!',
 							type : 'error',
-							hideAfter : 6,
+							hideAfter : 3,
 							showCloseButton : true
 						});
 
@@ -214,7 +215,7 @@
 							if (name == "") {
 								$.globalMessenger().post({
 									message : "用户名不能为空!",
-									hideAfter : 4,
+									hideAfter : 3,
 									type : 'error',
 								});
 								$("#loginName").focus();
@@ -223,7 +224,7 @@
 							if (pwd == "") {
 								$.globalMessenger().post({
 									message : "密码不能为空!",
-									hideAfter : 4,
+									hideAfter : 3,
 									type : 'error',
 								});
 								$("#login_password").focus();

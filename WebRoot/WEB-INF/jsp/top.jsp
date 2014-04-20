@@ -32,13 +32,13 @@
 				<!-- user dropdown starts -->
 				<div class="btn-group pull-right" >
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-user"></i><span class="hidden-phone"> 用户名</span>
+						<i class="icon-user"></i><span class="hidden-phone" id="topLoginName"></span>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#">个人设置</a></li>
+						<li><a href="${base}/toEditPwd">账户设置</a></li>
 						<li class="divider"></li>
-						<li><a href="${base}/login.html">登出系统</a></li>
+						<li><a href="${base}/logout">登出系统</a></li>
 					</ul>
 				</div>
 				<!-- user dropdown ends -->
@@ -48,7 +48,7 @@
 						<li><a href="#">搜索</a></li>
 						<li>
 							<form class="navbar-search pull-left">
-								<input placeholder="Search" class="search-query span2" name="query" type="text">
+								<input placeholder="搜索" class="search-query span2" name="query" type="text">
 							</form>
 						</li>
 					</ul>
@@ -56,3 +56,18 @@
 			</div>
 		</div>
 	</div>
+	
+<!-- 异步根据用户权限，加载当前用户名 -->
+<script type="text/javascript">
+$(function(){
+	$.ajax({
+		url : "${base}/usertopLoginName",
+		type : "post",
+		success : function(result) {
+			$("#topLoginName").html(result);
+		}
+	});
+});
+</script>			
+	
+	

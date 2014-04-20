@@ -2,6 +2,7 @@
 
 			<!-- left menu starts -->
 			<div class="span2 main-menu-span">
+				<!-- 这里根据后台权限设置自动增加所有功能 -->
 				<div class="well nav-collapse sidebar-nav"  id="nav">
 				</div><!--/.well -->
 			</div><!--/span-->
@@ -22,14 +23,13 @@ function InitLeftMenu(contextPath) {
 		
     		$.each(n.menus, function(j, o) {
         		//二级菜单
-        		menulist += '<li><a class="ajax-link" ref="'+o.menuid+'" href="#" rel="' + contextPath+o.url + '" ><i class="icon-eye-open"></i><span class="hidden-tablet">' + o.menuname + '</span></a></li>'
-			//alert("333333333333333333333  menulist ="+menulist);
+        		menulist += '<li><a class="ajax-link" ref="'+o.menuid+'" href="'+contextPath+o.url+'" href="' + contextPath+o.url + '" ><i class="icon-eye-open"></i><span class="hidden-tablet">' + o.menuname + '</span></a></li>'
 			
 			if(o.child && o.child.length>0)
 			{
 				//三级菜单
 				$.each(o.child,function(k,p){
-					menulist += '<li><a class="ajax-link" ref="'+p.menuid+'" href="#" rel="' + contextPath+p.url + '" ><i class="icon-align-justify"></i><span class="hidden-tablet">' + p.menuname + '</span></a></li>'
+					menulist += '<li><a class="ajax-link" ref="'+p.menuid+'" href="'+contextPath+p.url+'" rel="' + contextPath+p.url + '" ><i class="icon-align-justify"></i><span class="hidden-tablet">' + p.menuname + '</span></a></li>'
 				});
 			}
         })
@@ -37,9 +37,7 @@ function InitLeftMenu(contextPath) {
     });
     
     menulist += '</ul>';
-    
-    alert("6666666666666666  menulist :"+menulist);
-		
+    	
 	$("#nav").html(menulist);
 }
 

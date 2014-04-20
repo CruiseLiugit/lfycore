@@ -87,8 +87,8 @@ public class SysUserServiceImpl{
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean updateLoginPwd(Map<String,Object> map) throws Exception{
-		return sysUserDao.updateLoginPwd(map);
+	public boolean updateLoginPwd(SysUser sysUser) throws Exception{
+		return sysUserDao.updateLoginPwd(sysUser);
 	}
 
 	/**

@@ -1,6 +1,33 @@
 记录每天修改的细节：
 
 //----------------------------------------------
+//2014-04-08
+1、开始做 用户的增删改
+2、修改 leftmenu.jsp 页面中的 js 加载代码
+
+
+//----------------------------------------------
+//2014-04-07
+1、在 top.jsp 页面中，增加异步获取当前用户名的功能
+2、在 top.jsp 页面中，完成退出功能
+3、增加 WEB-INF/jsp/account/editPassword.jsp 页面，修改用户信息
+4、增加了 editPassword.jsp 旧密码异步验证
+5、增加了 eidtPassword.jsp 各个输入框的输入验证
+6、完成 用户个人设置内容修改，涉及到 
+   editPassword.jsp
+   SysUserAction.java
+   SysUserServiceImpl.java
+   SysUserDaoImpl.java
+   
+   /////////////////////////////////
+   发现技巧
+   (1)更新直接使用 BaseDao 中的 update(T)方法
+   (2)在 Action 方法中，设置返回值类型 @Ok("json") ，可以直接把任意类型转换为  json 字符串返回 
+   /////////////////////////////////
+
+
+
+//----------------------------------------------
 //2014-04-06
 1、登录完成后，需要解决权限问题。权限首先要解决都是菜单。
    目前所有菜单全部静态的，但是需要在后台能够管理。每次用户登录时，动态取出分配给他的菜单项目
@@ -9,8 +36,23 @@
   com.liufuya.core.mvc.module.privilege.dao.impl.MenusDaoImpl
   
   
-      
-
+  com.liufuya.core.mvc.module.privilege.action.SysUserAction.java
+  (1)当用户登录后，进入 index.jsp 页面。页面通过 jQuery 自动进行异步请求
+  (2)代码在 leftmenu.jsp  底部。   $.post();
+  (3)调用 SysUserAction 中的 
+  	public void loadMenus(HttpServletRequest request,HttpServletResponse response)
+  (4)该方法中，访问数据库类 MenusDaoImpl.java 
+    public List<Menus> findUserMenus(Map<String, Object> map)
+  (5)返回数据，经过 SysUserAction 中的方法，进行 JSON 转换。把对象转换为 json 字符串
+    private StringBuffer processMenus(List<Menus> allMenusList,String fMenuCode,StringBuffer menuSBuffer)
+  (6)loadMenus() 方法返回的数据给   leftmenu.jsp 页面。通过 js 函数
+    InitLeftMenu('${base }');
+    解析并显示到左边菜单区域
+    
+3、遇到问题
+   目前设计有三级菜单。这个修改为二级
+   
+   
 
 //----------------------------------------------
 //2014-04-05
