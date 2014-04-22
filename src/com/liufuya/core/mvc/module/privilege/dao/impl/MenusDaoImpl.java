@@ -3,6 +3,7 @@ package com.liufuya.core.mvc.module.privilege.dao.impl;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,10 +16,15 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 
 import com.liufuya.core.mvc.module.BasicDao;
+import com.liufuya.core.mvc.module.privilege.model.Authority;
+import com.liufuya.core.mvc.module.privilege.model.Button;
 import com.liufuya.core.mvc.module.privilege.model.Menus;
 import com.liufuya.core.mvc.module.privilege.model.SysUser;
+import com.liufuya.core.mvc.module.privilege.model.UserRole;
 
 /**
  * 菜单dao类
@@ -28,7 +34,7 @@ import com.liufuya.core.mvc.module.privilege.model.SysUser;
  */
 @IocBean
 public class MenusDaoImpl extends BasicDao {
-
+	private static final Log log = Logs.get();
 	
 	/**
 	 * 获取当前用户拥有的菜单
@@ -86,16 +92,6 @@ public class MenusDaoImpl extends BasicDao {
 	 * 更新菜单
 	 */
 	public boolean updateMenus(Menus menus) {
-		update(Menus.class,
-				Chain.make("menuName", menus.getMenuName())
-						.make("levelId", menus.getLevelId())
-						.make("fmenuCode", menus.getFmenuCode())
-						.make("engName", menus.getEngName())
-						.make("menuUrl", menus.getMenuUrl())
-						.make("createDate", menus.getCreateDate())
-						.make("status", menus.getStatus()),
-				Cnd.where("menuCode", "=", menus.getMenuCode()));
-
 		return this.update(menus);
 
 	}
@@ -116,7 +112,7 @@ public class MenusDaoImpl extends BasicDao {
 				.and("status", "=", "1");
 		return findByCondition(Menus.class, condition);
 	}
-
+	
 	/**
 	 * 查询所有菜单列表 -实现分页
 	 */
@@ -148,41 +144,54 @@ public class MenusDaoImpl extends BasicDao {
 	}
 
 	/**
+	 * 通过菜单 Id获取菜单
+	 */
+	public Menus getMenusById(String id) {
+		Cnd condition = Cnd.where("id", "=", id).and("status", "=", "1");
+		return findByCondition(Menus.class, condition);
+	}
+
+	
+	/**
 	 * 获取所有的按钮
 	 */
-	public List<Map<String, Object>> getAllButtons() {
+	public List<Button> getAllButtons() {
 		//select * from SYS_MODEL where status ='1'
-		//return this.getSqlSessionTemplate().getMapper(MenusMapper.class).getAllButtons();
-		return null;
+		Cnd condition = Cnd.where("status", "=", "1");
+		return search(Button.class, condition);
 	}
 
 	/**
 	 * 获取权限编码
 	 */
-	public List<Map<String, Object>> getAuthorityCodeByMenuCode(
-			Map<String, Object> map) {
+	public List<Authority> getAuthorityCodeByMenuCode(String menuCode) {
 		//select auth_code from SYS_AUTHORITIES where menu_code=#{menuCode}
-		
-		//return this.getSqlSessionTemplate().getMapper(MenusMapper.class).getAuthorityCodeByMenuCode(map);
-		return null;
+		Cnd condition = Cnd.where("menuCode", "=", menuCode);
+		return search(Authority.class, condition);
 	}
 
 	/**
 	 * 删除角色权限表
 	 */
-	public void deleteRoleAuthByauthCode(Map<String, Object> map) {
+	public void deleteRoleAuthByauthCode(String authCode) {
 		//delete from SYS_ROLES_AUTHORITIES where auth_code = #{authCode} 
 		
-		//this.getSqlSessionTemplate().getMapper(MenusMapper.class).deleteRoleAuthByauthCode(map);
+		Sql sql = Sqls.create("delete from SYS_ROLES_AUTHORITIES where auth_code = @authCode ");
+		sql.params().set("authCode", authCode);
+		dao.execute(sql);
 	}
 
 	/**
 	 * 删除权限表
 	 */
-	public void deleteAuthByMenuCode(Map<String, Object> map) {
+	public void deleteAuthByMenuCode(String menuCode) {
 		//delete from sys_authorities  where menu_code = #{menuCode} 
 		
-		//this.getSqlSessionTemplate().getMapper(MenusMapper.class).deleteAuthByMenuCode(map);
+		Sql sql = Sqls.create("delete from sys_authorities  where menu_code = @menuCode");
+		sql.params().set("menuCode", menuCode);
+		log.info("删除权限表 ="+sql.toString());
+		
+		dao.execute(sql);
 	}
 
 	/**
@@ -195,25 +204,28 @@ public class MenusDaoImpl extends BasicDao {
 			#{menuCode,jdbcType=VARCHAR},#{modelCode,jdbcType=VARCHAR},sysdate(),'1'
 			)
 		 * */
-		this.save("sys_authorities", 
-				Chain.make("", map.get(""))
-					 .make("", map.get(""))
-					 .make("", map.get(""))
-					 .make("", map.get(""))
-					 .make("", map.get(""))
-					 .make("", map.get("")));
+		Sql sql = Sqls
+				.create("insert into sys_authorities (AUTH_CODE,IS_MENU,MENU_CODE,MODEL_CODE,CREATE_DATE,STATUS)  " +
+						"values(@authCode,@isMenu,@menuCode,@modelCode,@createDate,'1')");
+		sql.params().set("authCode", (String)map.get("authCode"));
+		sql.params().set("isMenu", (String)map.get("isMenu"));
+		sql.params().set("menuCode", (String)map.get("menuCode"));
+		sql.params().set("modelCode", (String)map.get("modelCode"));
+		sql.params().set("createDate", new Date());
+		log.info("插入权限表"+sql.toString());
 		
-		//this.getSqlSessionTemplate().getMapper(MenusMapper.class).insertAuthority(map);
+		dao.execute(sql);
 	}
 
 	/**
 	 * 通过用户编码回去角色编码
 	 */
-	public String getRoleCodeByUserCode(Map<String, Object> map) {
+	public String getRoleCodeByUserCode(String userCode) {
 		//select role_code from sys_user_role  where user_code =#{userCode}
 		
-		//return this.getSqlSessionTemplate().getMapper(MenusMapper.class).getRoleCodeByUserCode(map);
-		return null;
+		Cnd condition = Cnd.where("userCode", "=", userCode).and("status", "=", "1");
+		UserRole urole =  findByCondition(UserRole.class, condition);
+		return urole.getRoleCode();
 	}
 
 	/**
@@ -221,30 +233,103 @@ public class MenusDaoImpl extends BasicDao {
 	 */
 	public void insertRoleAuth(Map<String, Object> map) {
 		//insert into SYS_ROLES_AUTHORITIES (ROLE_CODE, AUTH_CODE,CREATE_DATE,STATUS) values (#{roleCode}, #{authCode},sysdate(),'1')
+		Sql sql = Sqls.create("insert into SYS_ROLES_AUTHORITIES (ROLE_CODE, AUTH_CODE,CREATE_DATE,STATUS) " +
+				"values (@roleCode, @authCode,@createDate,'1')");
+		sql.params().set("roleCode", (String)map.get("roleCode"));
+		sql.params().set("authCode", (String)map.get("authCode"));
+		sql.params().set("createDate", new Date());
 		
+		log.info("插入角色权限表"+sql.toString());
 		
-		//this.getSqlSessionTemplate().getMapper(MenusMapper.class).insertRoleAuth(map);
+		dao.execute(sql);
 	}
 
 	/**
 	 * 获取已经拥有的按钮
 	 */
-	public List<Map<String, Object>> getCheckedButtonId(Map<String, Object> map) {
+	public List<Button> getCheckedButtonMenuCode(String menucode) {
 		/*
-		 select md.model_code as value  
+		 select md.id as btid,md.model_code as btcode,md.model_name as btname,md.imgname as btimg,md.model_title as bttitle,md.create_date as btdate,md.status as btsts,md.sortValue as btsort  
       from SYS_MENUS m,
       SYS_AUTHORITIES a,
       sys_model md 
       where  m.menu_code = a.menu_code 
       and a.model_code = md.model_code 
-      and m.menu_code =#{id}
+      and m.menu_code =
       and a.status='1'
       and m.status='1'
 		 * */
 		
-		//return this.getSqlSessionTemplate().getMapper(MenusMapper.class).getCheckedButtonId(map);
-		return null;
+
+		Sql sql = Sqls.create("select md.id as btid,md.model_code as btcode,md.model_name as btname,md.imgname as btimg,md.model_title as bttitle,md.create_date as btdate,md.status as btsts,md.sortValue as btsort  from SYS_MENUS m,SYS_AUTHORITIES a,sys_model md where  m.menu_code = a.menu_code and a.model_code = md.model_code and m.menu_code =@menuCode  and a.status='1' and m.status='1'");
+		sql.params().set("menuCode", menucode);
+		log.info("sql  ="+sql.toPreparedStatement());
+
+		// dao.execute(sql) 执行前，编写回调函数，解析 查询结果
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql)
+					throws SQLException {
+				List<Button> list = new LinkedList<Button>();
+				while (rs.next()) {
+					// m.FMENU_CODE,m.MENU_URL,m.LEVELID,m.SORTVALUE
+					Button bt = new Button();
+					bt.setId(rs.getInt("btid"));
+					bt.setModelCode(rs.getString("btcode"));
+					bt.setModelName(rs.getString("btname"));
+					bt.setImgName(rs.getString("btimg")==null?"":rs.getString("btimg"));
+					bt.setModelTitle(rs.getString("bttitle")==null?"":rs.getString("bttitle"));
+					bt.setCreateDate(rs.getString("btdate"));
+					bt.setStatus(rs.getString("btsts"));
+					bt.setSortValue(rs.getInt("btsort"));
+			
+					list.add(bt);
+				}
+
+				return list;
+			}
+		});
+
+		dao.execute(sql);
+		return sql.getList(Button.class);
+		// Nutz内置了大量回调, 请查看Sqls.callback的属性
 	}
+	
+	/**
+	 * 获取已经拥有的按钮
+	 */
+	public List<Button> getCheckedButtonMenuId(String menuid) {
+		Sql sql = Sqls.create("select md.id as btid,md.model_code as btcode,md.model_name as btname,md.imgname as btimg,md.model_title as bttitle,md.create_date as btdate,md.status as btsts,md.sortValue as btsort  from SYS_MENUS m,SYS_AUTHORITIES a,sys_model md where  m.menu_code = a.menu_code and a.model_code = md.model_code and m.id =@menuId  and a.status='1' and m.status='1'");
+		sql.params().set("menuId", menuid);
+
+		// dao.execute(sql) 执行前，编写回调函数，解析 查询结果
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql)
+					throws SQLException {
+				List<Button> list = new LinkedList<Button>();
+				while (rs.next()) {
+					// m.FMENU_CODE,m.MENU_URL,m.LEVELID,m.SORTVALUE
+					Button bt = new Button();
+					bt.setId(rs.getInt("btid"));
+					bt.setModelCode(rs.getString("btcode"));
+					bt.setModelName(rs.getString("btname"));
+					bt.setImgName(rs.getString("btimg")==null?"":rs.getString("btimg"));
+					bt.setModelTitle(rs.getString("bttitle")==null?"":rs.getString("bttitle"));
+					bt.setCreateDate(rs.getString("btdate"));
+					bt.setStatus(rs.getString("btsts"));
+					bt.setSortValue(rs.getInt("btsort"));
+			
+					list.add(bt);
+				}
+
+				return list;
+			}
+		});
+
+		dao.execute(sql);
+		return sql.getList(Button.class);
+		// Nutz内置了大量回调, 请查看Sqls.callback的属性
+	}
+	
 
 	/**
 	 * 通过菜单名称查找菜单
@@ -325,7 +410,33 @@ public class MenusDaoImpl extends BasicDao {
 		from sys_authorities au  left join sys_model pov_m on pov_m.model_code=au.model_code 
 				where pov_m.status='1' and au.is_menu='0' and au.status='1'
 		*/		
-		//return this.getSqlSessionTemplate().getMapper(MenusMapper.class).getAllAuthButtons();
+		Sql sql = Sqls.create("select pov_m.model_code,pov_m.model_name,au.MENU_CODE,au.auth_code from sys_authorities au  left join sys_model pov_m on pov_m.model_code=au.model_code  where pov_m.status='1' and au.is_menu='0' and au.status='1'"); 
+		
+		// dao.execute(sql) 执行前，编写回调函数，解析 查询结果
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql)
+					throws SQLException {
+				List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+				while (rs.next()) {
+					// m.FMENU_CODE,m.MENU_URL,m.LEVELID,m.SORTVALUE
+					Menus menu = new Menus();
+					menu.setMenuCode(rs.getString("MENU_CODE"));
+					menu.setMenuName(rs.getString("MENU_NAME"));
+					menu.setFmenuCode(rs.getString("FMENU_CODE"));
+					menu.setMenuUrl(rs.getString("auth_code"));
+					
+					Map<String, Object> map =  new HashMap<String, Object>();
+					
+					
+					list.add(map);
+				}
+
+				return list;
+			}
+		});
+
+		dao.execute(sql);
+		//return sql.getList(Map<String,Object>);
 		return null;
 	}
 

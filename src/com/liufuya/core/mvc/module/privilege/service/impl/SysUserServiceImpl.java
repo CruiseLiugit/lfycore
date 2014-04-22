@@ -266,5 +266,12 @@ public class SysUserServiceImpl{
 	public List<SysUser> checkLoginName(Map<String, Object> map) {
 		return sysUserDao.checkLoginName(map);
 	}
+	
+	
+	
+	
+	
+	
+	
 
 }

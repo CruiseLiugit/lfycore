@@ -18,6 +18,7 @@ import org.nutz.dao.entity.annotation.Table;
  */
 @Table("sys_authorities")
 public class Authority implements Serializable{
+	
 	private static final long serialVersionUID = 879047567257454110L;
 	
 	@Id

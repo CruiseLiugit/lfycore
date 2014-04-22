@@ -11,7 +11,7 @@ import org.nutz.dao.entity.annotation.Table;
  * @author miaohanbin
  *
  */
-@Table("")
+@Table("sys_user_role")
 public class UserRole implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

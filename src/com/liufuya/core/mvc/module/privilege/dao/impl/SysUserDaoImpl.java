@@ -1,5 +1,6 @@
 package com.liufuya.core.mvc.module.privilege.dao.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -7,13 +8,15 @@ import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 
 import com.liufuya.core.mvc.module.BasicDao;
 import com.liufuya.core.mvc.module.privilege.model.SysUser;
 
 @IocBean
 public class SysUserDaoImpl extends BasicDao {
-	
+	private static final Log log = Logs.get();
 	
 	/**
 	 * 根据id删除用户
@@ -80,19 +83,6 @@ public class SysUserDaoImpl extends BasicDao {
 	 * @return
 	 */
 	public boolean updateSysUserById(SysUser sysUser) {
-		// Cnd condition = Cnd.where("name", "=",
-		// map.get("loginName")).and("status", "=", "1");
-		update(SysUser.class,Chain.make("loginName", sysUser.getLoginName())
-					    .make("logPwd", sysUser.getLogPwd())
-					    .make("userName", sysUser.getUserName())
-					    .make("email", sysUser.getEmail())
-						.make("userPhone", sysUser.getUserPhone())
-						.make("userType", sysUser.getUserType())
-						.make("sellerCode", sysUser.getSellerCode())
-						.make("createDate", sysUser.getCreateDate())
-						.make("status", sysUser.getStatus()),
-				Cnd.where("userCode", "=", sysUser.getUserCode()));
-
 		return this.update(sysUser);
 	}
 
@@ -130,7 +120,8 @@ public class SysUserDaoImpl extends BasicDao {
 				Cnd.where("status", "=", 1)));
 		List<SysUser> users = dao.query(SysUser.class,
 				Cnd.where("status", "=", 1), pager);
-
+		//log.info("分页查询的用户数量  users.size ="+users.size());
+		
 		return users;
 	}
 

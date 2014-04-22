@@ -16,6 +16,7 @@ import org.nutz.dao.entity.annotation.Table;
  */
 @Table("sys_model")
 public class Button implements java.io.Serializable{
+	
 	private static final long serialVersionUID = 879047567257454120L;
 	
 	@Id

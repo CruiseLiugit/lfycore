@@ -8,8 +8,15 @@ public class Constants {
 	
 	
 	
-	//分页每页最大条数
-	public static final int PAGE_SIZE = 10;
+	//分页每页最大条数默认
+	/**
+	 * sysUserList.jsp 页面最大数据显示条数
+	 */
+	public static final int SYSUSER_PAGE_SIZE = 10;
+	/**
+	 * sysMenusList.jsp 页面最大数据显示条数。这里设置大一些
+	 */
+	public static final int MENUS_PAGE_SIZE = 50;
 	
 	
 	/**

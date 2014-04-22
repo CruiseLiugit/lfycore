@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -165,7 +166,7 @@ public class SysUserAction {
 	}
 
 	// ************************************************************************************
-	// 修改账户信息模块
+	// 所有页面顶部 top.jsp,修改账户信息模块
 	// 2014-04-19
 	/**
 	 * 跳转到 修改密码页面
@@ -231,8 +232,45 @@ public class SysUserAction {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-
 	}
+	
+	
+	
+	// ************************************************************************************
+	// 用户管理， 增加、查看、修改、删除用户模块
+	// 2014-04-20
+	/**
+	 * sysUserList.jsp 页面，增加 用户功能，异步操作
+	 */
+	@At("/createSysUser")
+	@Ok("json")
+	//data:{,"loginpwd":c_loginPwd.val(),"email":c_usermail.val(),"phone":c_userphone.val(),"type":c_usertype.val(),},
+	//@Param 适配器获取 HTTP 参数，:: 表示参数是个对象 ,user. 表示表单参数名前缀
+	public String createSysUser(@Param("::user.") SysUser user){
+		// 1 适配器自动把页面数据，封装到 user 对象中
+		// 2 对比 界面 sysUserList.jsp 传递过来的密码，要进行 MD5加密
+		user.setLogPwd(new MD5().getMD5ofStr(user.getLogPwd().intern()));
+		// 3 封装默认到参数
+		log.info("type = "+user.getUserType());
+		String uuid = UUID.randomUUID().toString();
+		user.setUserCode(uuid);
+		user.setStatus(Constants.SYSUSER_STATUS_VALID);
+		user.setCreateDate(new Date());
+		// 4 插入数据库
+		try {
+			///////////////4月20日晚，暂时没有菜单模块，角色模块，所以暂停////////////////
+			//sysUserService.saveSysUser(user,relativedRoles);
+			//message = "新增系统用户成功";
+		} catch (Exception e) {
+			e.printStackTrace();
+			//message="新增系统用户失败:";
+		}
+			// 返回验证后的状态
+			return "{\"status\":200}";
+		
+	}
+	
+	
+	
 
 }
