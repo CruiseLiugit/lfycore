@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -25,6 +27,9 @@ import org.nutz.mvc.view.JspView;
 import com.liufuya.common.Constants;
 import com.liufuya.common.base.BaseController;
 import com.liufuya.common.base.MD5;
+import com.liufuya.common.dwz.DWZ;
+import com.liufuya.common.dwz.ReturnBean;
+import com.liufuya.core.mvc.module.BaseAction;
 import com.liufuya.core.mvc.module.privilege.model.SysUser;
 import com.liufuya.core.mvc.module.privilege.service.impl.SysUserServiceImpl;
 
@@ -35,7 +40,7 @@ import com.liufuya.core.mvc.module.privilege.service.impl.SysUserServiceImpl;
  * 
  */
 @IocBean
-public class SysUserAction {
+public class SysUserAction extends BaseAction {
 	private static final Log log = Logs.get();
 
 	@Inject("refer:sysUserServiceImpl")
@@ -68,7 +73,7 @@ public class SysUserAction {
 		SysUser sysUser = sysUserService.findSysUser(map);
 		if (sysUser != null) {// 用户存在
 			HttpSession session = req.getSession();
-			session.setAttribute("loginName", name);
+			session.setAttribute(Constants.CURRENT_LOGIN_NAME, name);
 			session.setAttribute(Constants.CURRENT_LOGIN_USER, sysUser);
 
 			return new JspView("jsp.index");
@@ -150,7 +155,8 @@ public class SysUserAction {
 	public void topLoginName(HttpServletRequest request,
 			HttpServletResponse response) {
 		HttpSession session = request.getSession();
-		String topLoginName = (String) session.getAttribute("loginName");
+		String topLoginName = (String) session
+				.getAttribute(Constants.CURRENT_LOGIN_NAME);
 		// log.info("登录名为 :"+topLoginName);
 		try {
 			// 解决返回值为 XMLDocument 问题
@@ -189,16 +195,25 @@ public class SysUserAction {
 		// 2 对比 界面 editPasword.jsp 传递过来的密码，要进行 MD5加密
 		oldname = oldname.trim().intern();
 		oldpwd = oldpwd.trim().intern();
-		log.info("oldname ="+oldname +" , oldpwd ="+oldpwd);
-		
+		log.info("oldname =" + oldname + " , oldpwd =" + oldpwd);
+
 		String dbpwd = new MD5().getMD5ofStr(oldpwd);
+		ReturnBean bean = new ReturnBean();
 		// 3 与当前 Session 中保存的进行对比
 		if (oldname.equals(sysUser.getLoginName())
 				&& dbpwd.equals(sysUser.getLogPwd())) {
+			log.info("旧密码正确");
 			// 返回验证后的状态
-			return "{\"status\":200}";
+			bean.setStatusCode(DWZ.statusCode.ok);
+			bean.setMessage("密码正确");
+			// return Json.toJson(bean);
+			return "200";
 		} else {
-			return "{\"status\":201}";
+			log.info("旧密码错误");
+			bean.setStatusCode(DWZ.statusCode.error);
+			bean.setMessage("密码错误");
+			// return Json.toJson(bean);
+			return "300";
 		}
 	}
 
@@ -207,7 +222,8 @@ public class SysUserAction {
 	 */
 	@At("/usertopEditPwd")
 	@Ok("jsp:jsp.index")
-	public void userTopEditPwd(@Param("user_name") String username,
+	// @Ok("json")
+	public void userTopEditPwd(@Param("real_name") String username,
 			@Param("login_newpwd") String newpwd, @Param("email") String email,
 			@Param("phone") String phone, HttpSession session) {
 		// 1 从session 中取出当前登录 用户对象
@@ -218,59 +234,170 @@ public class SysUserAction {
 		newpwd = newpwd.trim().intern();
 		email = email.trim().intern();
 		phone = phone.trim().intern();
-		
-		//这里要做一个 邮箱、电话的正则表达验证。前端没有做好
+
+		// 这里要做一个 邮箱、电话的正则表达验证。前端没有做好
 		sysUser.setUserName(username);
 		sysUser.setLogPwd(new MD5().getMD5ofStr(newpwd));
 		sysUser.setEmail(email);
 		sysUser.setUserPhone(phone);
-		
+		log.info("Edit sysUser obj =:" + sysUser);
+		log.info("Edit sysUser name =:" + sysUser.getUserName());
+		log.info("Edit sysUser phone =:" + sysUser.getUserPhone());
+
+		ReturnBean bean = new ReturnBean();
 		// 3 调用 服务层方法，修改数据库
 		try {
 			boolean flag = sysUserService.updateLoginPwd(sysUser);
+			/*
+			 * boolean flag=true; if (flag) {
+			 * bean.setStatusCode(DWZ.statusCode.ok);
+			 * bean.setMessage("update account Info Success");
+			 * bean.setCallbackType(""); bean.setForwardUrl("");
+			 * bean.setNavTabId(""); bean.setRel(""); }else{
+			 * bean.setStatusCode(DWZ.statusCode.error);
+			 * bean.setMessage("update account Info Error"); }
+			 */
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		// return Json.toJson(bean);
 	}
-	
-	
-	
+
 	// ************************************************************************************
+	@At("/toCreateSysUser")
+	@Ok("jsp:jsp.sysuser.sysUserAdd")
+	public void toCreateSysUser() {
+		// 简单跳转
+	}
+
 	// 用户管理， 增加、查看、修改、删除用户模块
 	// 2014-04-20
 	/**
 	 * sysUserList.jsp 页面，增加 用户功能，异步操作
+	 * 
+	 * @Param 适配器获取 HTTP 参数，:: 表示参数是个对象 ,user. 表示表单参数名前缀
 	 */
+	//
 	@At("/createSysUser")
-	@Ok("json")
-	//data:{,"loginpwd":c_loginPwd.val(),"email":c_usermail.val(),"phone":c_userphone.val(),"type":c_usertype.val(),},
-	//@Param 适配器获取 HTTP 参数，:: 表示参数是个对象 ,user. 表示表单参数名前缀
-	public String createSysUser(@Param("::user.") SysUser user){
+	// @Ok("jsp:jsp.sysuser.sysUserList")
+	// @Ok("jsp:jsp.index")
+	// @Ok("json")
+	public String createSysUser(@Param("::user.") SysUser user,
+			@Param("navTabId") String navTabId, HttpServletRequest request) {
+		// log.info("增加用户信息 user :"+user);
+		// log.info("增加用户信息 user loginname :"+user.getLoginName());
+		// log.info("增加用户信息 user name :"+user.getUserName());
+		// log.info("增加用户信息 user type :"+user.getUserType());
+
 		// 1 适配器自动把页面数据，封装到 user 对象中
 		// 2 对比 界面 sysUserList.jsp 传递过来的密码，要进行 MD5加密
-		user.setLogPwd(new MD5().getMD5ofStr(user.getLogPwd().intern()));
+		// user.setLogPwd(new MD5().getMD5ofStr(user.getLogPwd().intern()));
 		// 3 封装默认到参数
-		log.info("type = "+user.getUserType());
 		String uuid = UUID.randomUUID().toString();
 		user.setUserCode(uuid);
 		user.setStatus(Constants.SYSUSER_STATUS_VALID);
 		user.setCreateDate(new Date());
+
+		ReturnBean bean = new ReturnBean();
 		// 4 插入数据库
 		try {
-			///////////////4月20日晚，暂时没有菜单模块，角色模块，所以暂停////////////////
-			//sysUserService.saveSysUser(user,relativedRoles);
-			//message = "新增系统用户成功";
+			// /////////////4月20日晚，暂时没有菜单模块，角色模块，所以暂停////////////////
+			// sysUserService.saveSysUser(user,relativedRoles);
+			// message = "新增系统用户成功";
+			bean.setStatusCode(DWZ.statusCode.ok);
+			// bean.setMessage(getText("msg.operation.success",request));
+			bean.setMessage("操作成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-			//message="新增系统用户失败:";
+			bean.setStatusCode(DWZ.statusCode.error);
+			bean.setMessage("操作失败");
 		}
-			// 返回验证后的状态
-			return "{\"status\":200}";
+		
+		bean.setNavTabId(navTabId);
+		bean.setRel("");
+		bean.setCallbackType(DWZ.CallbackType);
+		bean.setForwardUrl("");
+		
+		/*
+		 * { "statusCode":"200", "message":"操作成功", "navTabId":"", "rel":"",
+		 * "callbackType":"closeCurrent", "forwardUrl":"" }
+		 */
+		// 返回验证后的状态
+		String json = Json.toJson(bean);
+		// log.info(json);
+		return json;
+	}
+
+	// 删除用户
+	@At("/deleteSysUser")
+	@Ok("json")
+	public String deleteSysUser(@Param("uid") String uid,
+			HttpServletRequest request) {
+		// 简单跳转
+		log.info("user id=" + uid);
+		String msg = getText("msg.operation.success", request);
+		log.info("本地 字符串 msg =" + msg);
+		return ajaxForwardSuccess(msg);
+	}
+
+	//
+	// 跳转到修改用户页面
+	@At("/toEditSysUser")
+	@Ok("jsp:jsp.sysuser.sysUserEdit")
+	public void toEditSysUser(@Param("uid") String uid,
+			HttpServletRequest request) {
+		//根据用户 id 查询用户对象
+		//log.info("要修改用户的 code ="+uid);
+		List<SysUser> ulist = sysUserService.getSysUserById(uid); 
+		if (ulist != null && ulist.size() > 0) {
+			// 跳转并传递修改用户 id
+			request.setAttribute("sysUser", ulist.get(0));
+			request.setAttribute("uid", uid);
+		}
 		
 	}
-	
-	
-	
+
+	// 修改用户
+	@At("/eidtSysUser")
+	//@Ok("jsp:jsp.sysuser.sysUserList")
+	public String eidtSysUser(@Param("::user.") SysUser user,
+			@Param("navTabId") String navTabId, @Param("userid") String uid,
+			HttpServletRequest request) {
+		// 跳转并刷新列表数据
+		//log.info("修改用户信息 user :" + user);
+		//log.info("修改用户信息 user loginname :" + user.getLoginName());
+		//log.info("修改用户信息 user name :" + user.getUserName());
+		//log.info("修改用户信息 user type :" + user.getUserType());
+
+		// 1 适配器自动把页面数据，封装到 user 对象中
+		List<SysUser> ulist = sysUserService.getSysUserById(uid); 
+		SysUser sysUser = null;
+		if (ulist != null && ulist.size() > 0) {
+			sysUser = ulist.get(0);
+		}
+
+		ReturnBean bean = new ReturnBean();
+		// 4 插入数据库
+		try {
+			// /////////////4月20日晚，暂时没有菜单模块，角色模块，所以暂停////////////////
+			// sysUserService.saveSysUser(user,relativedRoles);
+			// message = "新增系统用户成功";
+			bean.setStatusCode(DWZ.statusCode.ok);
+			// bean.setMessage(getText("msg.operation.success",request));
+			bean.setMessage("操作成功");
+			bean.setNavTabId(navTabId);
+			bean.setRel("");
+			bean.setCallbackType(DWZ.CallbackType);
+			bean.setForwardUrl("");
+		} catch (Exception e) {
+			e.printStackTrace();
+			// message="新增系统用户失败:";
+		}
+
+		// 返回验证后的状态
+		return Json.toJson(bean);
+	}
 
 }

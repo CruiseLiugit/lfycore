@@ -1,11 +1,9 @@
 package com.liufuya.core.mvc.module;
 
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -17,8 +15,10 @@ import org.nutz.mvc.annotation.Ok;
 import com.liufuya.common.Constants;
 import com.liufuya.core.mvc.module.privilege.model.Button;
 import com.liufuya.core.mvc.module.privilege.model.Menus;
+import com.liufuya.core.mvc.module.privilege.model.Role;
 import com.liufuya.core.mvc.module.privilege.model.SysUser;
 import com.liufuya.core.mvc.module.privilege.service.impl.MenusServiceImpl;
+import com.liufuya.core.mvc.module.privilege.service.impl.RoleServiceImpl;
 import com.liufuya.core.mvc.module.privilege.service.impl.SysUserServiceImpl;
 
 /**
@@ -37,6 +37,9 @@ public class LeftMenuAction {
 
 	@Inject("refer:menusServiceImpl")
 	public MenusServiceImpl menusService;
+	
+	@Inject("refer:roleServiceImpl")
+	public RoleServiceImpl roleServiceImpl;
 
 	/**
 	 * 项目启动时的验证，搭建项目框架使用，返回当前系统时间
@@ -80,11 +83,38 @@ public class LeftMenuAction {
 		List<Menus> menuslist = this.menusService.getMenusList(1,
 				Constants.MENUS_PAGE_SIZE);
 		request.setAttribute("sysmenuslist", menuslist);
+	}
+	
+	/**
+	 * 跳转到 角色管理列表界面 sysRoleList.jsp
+	 */
+	@At("/sysRoleList")
+	@Ok("jsp:jsp.sysrole.sysRoleList")
+	public void sysRoleList(HttpServletRequest request) {
+		// 这里查询数据库，获取所有系统菜单列表
+		List<Role> rolelist = this.roleServiceImpl.quryAllRoleList(1,
+				Constants.ROLES_PAGE_SIZE);
+		request.setAttribute("sysroleslist", rolelist);
 		
 		//取出所有的按钮项目
-		List<Button> buttonslist= menusService.getAllButtons();
-		request.setAttribute("buttonlist", buttonslist);
-		
+		//List<Button> buttonslist= menusService.getAllButtons();
+		//request.setAttribute("buttonlist", buttonslist);
 	}
+	
+	
+	// ---------------------测试 jQuery Easy UI-----------------------
+		/**
+		 * 跳转到 用户管理 管理列表界面 sysUserList.jsp
+		 * @param request
+		 */
+		@At("/testjqui")
+		@Ok("jsp:jsp.testjqeasyui.list")
+		public void testjquiList(HttpServletRequest request) {
+			// 这里查询数据库，获取所有角色
+			List<Role> rolelist = this.roleServiceImpl.quryAllRoleList(1,
+					Constants.ROLES_PAGE_SIZE);
+			request.setAttribute("sysroleslist", rolelist);
+		}
+	
 
 }

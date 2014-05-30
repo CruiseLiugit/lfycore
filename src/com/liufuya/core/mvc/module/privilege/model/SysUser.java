@@ -32,7 +32,7 @@ public class SysUser implements Serializable{
 	private String logPwd;
 
 	@Column("user_name")
-	private String userName;
+	private String userName;   //真实姓名
 
 	@Column("email")
 	private String email;

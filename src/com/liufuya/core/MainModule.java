@@ -5,6 +5,7 @@ import org.nutz.mvc.annotation.Encoding;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.IocBy;
+import org.nutz.mvc.annotation.Localization;
 import org.nutz.mvc.annotation.Modules;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.SetupBy;
@@ -32,6 +33,8 @@ import com.liufuya.core.filter.ChrsetFilter;
 @Filters({@By(type=ChrsetFilter.class)})
 @SetupBy(value=CoreSetup.class)
 @Encoding(input="UTF-8",output="UTF-8")
+//本地化
+@Localization(value="resource", defaultLocalizationKey="zh_CN")
 public class MainModule {
 
 }

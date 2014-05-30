@@ -31,9 +31,9 @@ CREATE TABLE `sys_menus` (
 -- ----------------------------
 INSERT INTO `sys_menus` VALUES ('1', 'd23f35b8-2716-41c2-84f2-4cd56bb75ebb', '系统功能', '1', '0', 'A_SYSTEM', null, '2014-02-14', '1', '0');
 INSERT INTO `sys_menus` VALUES ('2', 'c23f35f8-2716-41c2-83f2-4cd56ad75ead', '权限管理', '10', 'd23f35b8-2716-41c2-84f2-4cd56bb75ebb', 'A_PRIVILEGE', null, '2014-02-14', '1', '0');
-INSERT INTO `sys_menus` VALUES ('3', 'a23f35f8-2716-31c2-83f2-4cd66ad75ehd', '用户管理', '101', 'c23f35f8-2716-41c2-83f2-4cd56ad75ead', 'A_USERMANAGE', '/jsp/user/sysUserList.jsp', '2014-02-14', '1', '1');
-INSERT INTO `sys_menus` VALUES ('4', 'f83f35f8-2716-31c2-83f2-4cd66ad75ehd', '角色管理', '102', 'c23f35f8-2716-41c2-83f2-4cd56ad75ead', 'A_ROLEMANGE', '/jsp/role/role.jsp', '2014-02-16', '1', '2');
-INSERT INTO `sys_menus` VALUES ('5', 'abcd35f8-2716-41c2-83f2-4cd56ad75ead', '菜单管理', '103', 'c23f35f8-2716-41c2-83f2-4cd56ad75ead', 'A_MENUMANGE', '/jsp/menus/menus.jsp', '2014-02-16', '1', '3');
+INSERT INTO `sys_menus` VALUES ('3', 'a23f35f8-2716-31c2-83f2-4cd66ad75ehd', '用户管理', '101', 'c23f35f8-2716-41c2-83f2-4cd56ad75ead', 'A_USERMANAGE', '/sysUserList', '2014-02-14', '1', '1');
+INSERT INTO `sys_menus` VALUES ('4', 'f83f35f8-2716-31c2-83f2-4cd66ad75ehd', '角色管理', '102', 'c23f35f8-2716-41c2-83f2-4cd56ad75ead', 'A_ROLEMANGE', '/sysRoleList', '2014-02-16', '1', '2');
+INSERT INTO `sys_menus` VALUES ('5', 'abcd35f8-2716-41c2-83f2-4cd56ad75ead', '菜单管理', '103', 'c23f35f8-2716-41c2-83f2-4cd56ad75ead', 'A_MENUMANGE', '/sysMenusList', '2014-02-16', '1', '3');
 INSERT INTO `sys_menus` VALUES ('6', '365c7266-8c4e-4d87-8dd6-09e46832349c', '用户模块管理', '2', '0', 'A_USERMODELMANAGE', '', '2014-02-18', '1', '1');
 INSERT INTO `sys_menus` VALUES ('7', '170e9076-07df-448e-ad1a-a522756147be', '用户问题管理', '21', '365c7266-8c4e-4d87-8dd6-09e46832349c', 'A_USERQUESTIONMANAGE', '/jsp/questions/questions.jsp', '2014-02-18', '1', '0');
 INSERT INTO `sys_menus` VALUES ('8', 'c7693b2e-dea6-4aab-801f-6bc24903d801', '用户管理', '22', '365c7266-8c4e-4d87-8dd6-09e46832349c', 'A_PREUSERMANAGE', '/jsp/preUser/preUsers.jsp', '2014-02-18', '1', '0');

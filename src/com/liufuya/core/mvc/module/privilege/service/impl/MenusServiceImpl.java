@@ -32,7 +32,7 @@ import com.liufuya.core.mvc.module.privilege.model.SysUser;
 /**
  * 菜单service实现层
  * 
- * @author caryCheng
+ * @author 刘立立
  * 
  */
 @IocBean
@@ -166,7 +166,7 @@ public class MenusServiceImpl {
 			log.info("根据菜单 code 查询 AuthorityCode list ="+authoritys.size());
 			if (authoritys != null) {
 				for (Authority authority : authoritys) {
-					menusDao.deleteRoleAuthByauthCode(authority.getaAuthCode().toString());// 删除角色权限
+					menusDao.deleteRoleAuthByauthCode(authority.getAuthCode().toString());// 删除角色权限
 				}
 			}
 			
@@ -248,8 +248,8 @@ public class MenusServiceImpl {
 					.getAuthorityCodeByMenuCode(menuCode); // 获取权限编码
 			if (authoritys != null && !authoritys.isEmpty()) {
 				for (Authority authMap : authoritys) {
-					String authCode = authMap.getaAuthCode() == null ? ""
-							: authMap.getaAuthCode().toString();
+					String authCode = authMap.getAuthCode() == null ? ""
+							: authMap.getAuthCode().toString();
 					menusDao.deleteRoleAuthByauthCode(authCode);// 删除角色权限
 				}
 			}
@@ -283,7 +283,7 @@ public class MenusServiceImpl {
 	 * @param checkedAuthList
 	 * @return
 	 */
-	public String createAuthTree(List<Map<String, Object>> checkedAuthList) {
+	public String createAuthTree(List<Authority> checkedAuthList) {
 		Tree authTreeRoot = new Tree();
 		// 设置根节点标识
 		authTreeRoot.setId(Constants.AUTH_TREE_ROOT_FLAG);
@@ -312,7 +312,7 @@ public class MenusServiceImpl {
 	private void processAuthTree(Tree authTreeRoot,
 			List<Map<String, Object>> authMenus,
 			List<Map<String, Object>> authButtons,
-			List<Map<String, Object>> checkedAuthList, String fmenuFlag) {
+			List<Authority> checkedAuthList, String fmenuFlag) {
 		// authTreeRoot节点的子节点
 		List<Tree> rooTchildrenList = new ArrayList<Tree>();
 		for (Map<String, Object> m : authMenus) {
@@ -340,11 +340,10 @@ public class MenusServiceImpl {
 						bchildren.setText((String) mb.get("MODEL_NAME"));
 						// 处理节点是否选中
 						if (null != checkedAuthList
-								&& checkedAuthList.size() > 0
-								&& !checkedAuthList.isEmpty()) {
-							for (Map<String, Object> mc : checkedAuthList) {
+								&& checkedAuthList.size() > 0) {
+							for (Authority auth : checkedAuthList) {
 								if (StringUtils.equals(
-										(String) mc.get("AUTH_CODE"),
+										(String) auth.getAuthCode(),
 										(String) mb.get("AUTH_CODE"))) {
 									bchildren.setChecked(true);
 								}

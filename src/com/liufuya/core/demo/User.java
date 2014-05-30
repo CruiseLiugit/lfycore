@@ -4,13 +4,13 @@ import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.entity.annotation.Id;
 
-@Table("tb_user")
+//@Table("tb_user")
 public class User {
-	@Id
+	//@Id
 	private long id;
 	
 	//唯一
-	@Name
+	//@Name
 	private String name;
 	
 	//设置为 瞬时变量

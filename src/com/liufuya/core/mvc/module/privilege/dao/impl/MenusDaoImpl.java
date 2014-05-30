@@ -40,7 +40,6 @@ public class MenusDaoImpl extends BasicDao {
 	 * 获取当前用户拥有的菜单
 	 */
 	public List<Menus> findUserMenus(Map<String, Object> map) {
-
 		Sql sql = Sqls
 				.create("select b.* from "
 						+ "(select distinct a.Id,m.MENU_CODE,m.ENGNAME,m.MENU_NAME,m.FMENU_CODE,m.MENU_URL,m.LEVELID,m.SORTVALUE "

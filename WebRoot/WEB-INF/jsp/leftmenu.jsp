@@ -1,46 +1,52 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 
-			<!-- left menu starts -->
-			<div class="span2 main-menu-span">
-				<!-- 这里根据后台权限设置自动增加所有功能 -->
-				<div class="well nav-collapse sidebar-nav"  id="nav">
-				</div><!--/.well -->
-			</div><!--/span-->
-			<!-- left menu ends -->
+		<!-- leftside begin -->
+		<div id="leftside">
+			<div id="sidebar_s">
+				<div class="collapse">
+					<div class="toggleCollapse"><div></div></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<!--  左侧菜单 begin -->
+					
+				<!--  </div> 左侧菜单 end -->
+			</div>
+		</div>
+		<!-- leftside end -->
 
 
 <!-- 异步根据用户权限，加载菜单 -->
 <script type="text/javascript">
+
 //初始化左侧
 function InitLeftMenu(contextPath) {
-
 	var menulist ='';
-	menulist +='<ul class="nav nav-tabs nav-stacked main-menu">';
-    
-    $.each(_menus.menus, function(i, n) {
+	menulist +='<div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div><div class="accordion" fillSpace="sidebar">';
+	$.each(_menus.menus, function(i, n) {
     		//一级菜单
-		menulist += '<li class="nav-header hidden-tablet">' + n.menuname+'</li>';
+		menulist += '<div class="accordionHeader"><h2><span>Folder</span>'+ n.menuname+'</h2></div><div class="accordionContent"><ul class="tree treeFolder">';
 		
     		$.each(n.menus, function(j, o) {
         		//二级菜单
-        		menulist += '<li><a class="ajax-link" ref="'+o.menuid+'" href="'+contextPath+o.url+'" href="' + contextPath+o.url + '" ><i class="icon-eye-open"></i><span class="hidden-tablet">' + o.menuname + '</span></a></li>'
+        		menulist += '<li><a href="'+contextPath+o.url+'" ref="'+o.menuid+'" target="navTab">'+o.menuname+'</a><ul>';
 			
 			if(o.child && o.child.length>0)
 			{
 				//三级菜单
 				$.each(o.child,function(k,p){
-					menulist += '<li><a class="ajax-link" ref="'+p.menuid+'" href="'+contextPath+p.url+'" rel="' + contextPath+p.url + '" ><i class="icon-align-justify"></i><span class="hidden-tablet">' + p.menuname + '</span></a></li>'
+					menulist += '<li><a ref="'+p.menuid+'" href="'+contextPath+p.url+'" target="navTab" rel="' + contextPath+p.url + '"><i class="icon-home"></i>' + p.menuname + '</a></li>';
 				});
 			}
-        })
-		
+			menulist += '</ul></li>';
+        });
+    		menulist += '</ul></div>';
     });
     
-    menulist += '</ul>';
-    	
-	$("#nav").html(menulist);
+    menulist += '</div>';
+    //alert("html  ="+menulist);
+	$("#sidebar").html(menulist);
 }
-
 
 var _menus;
 $(function(){

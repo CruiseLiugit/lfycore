@@ -51,12 +51,14 @@ public class Authority implements Serializable{
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	
 
-	public String getaAuthCode() {
+	public String getAuthCode() {
 		return authCode;
 	}
 
-	public void setCode(String authCode) {
+	public void setAuthCode(String authCode) {
 		this.authCode = authCode;
 	}
 

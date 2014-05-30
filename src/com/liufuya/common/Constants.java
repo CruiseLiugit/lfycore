@@ -17,16 +17,27 @@ public class Constants {
 	 * sysMenusList.jsp 页面最大数据显示条数。这里设置大一些
 	 */
 	public static final int MENUS_PAGE_SIZE = 50;
+	/**
+	 * sysRoleList.jsp 页面最大数据显示条数。这里设置大一些
+	 */
+	public static final int ROLES_PAGE_SIZE = 50;
+	
+	
 	
 	
 	/**
 	 * 当前登录用户Session常量
 	 */
+	public static final String CURRENT_LOGIN_NAME="CURRENT_LOGIN_NAME";
 	public static final String CURRENT_LOGIN_USER="CURRENT_LOGIN_USER";
 	/**
 	 * 登录验证码Session常量
 	 */
 	public static final String KAPTCHA_SESSION_KEY="KAPTCHA_SESSION_KEY";
+	
+	//存入验证码的 Session Name
+	public static final String VALIDATION_CODE = "validation_code";
+		
 	
 	/**
 	 * 一级菜单标记
@@ -147,4 +158,7 @@ public class Constants {
 	 * 解析Excel保存在session中的KEY
 	 */
 	public static final String PARSE_EXCEL_SESSION_KEY = "PaveListFromParseExcel";
+	
+	
+	
 }

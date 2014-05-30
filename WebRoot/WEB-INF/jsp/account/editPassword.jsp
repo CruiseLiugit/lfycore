@@ -1,135 +1,54 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<!DOCTYPE html>
-<html>
-  <jsp:include page="../header.jsp"></jsp:include>
-  
-<body>
-	<!-- topbar starts -->
-	<jsp:include page="../top.jsp"></jsp:include>
-	<!-- topbar ends -->
-
-	<div class="container-fluid">
-		<div class="row-fluid">
-				
-			<!-- left menu starts -->
-			<jsp:include page="../leftmenu.jsp"></jsp:include>
-			<!-- left menu ends -->
+<div class="pageContent">
+	<!-- onsubmit="return validateCallback(this, navTabAjaxDone);" -->
+	<form action="${base}/usertopEditPwd" method="post" id="editsysUserform"  class="pageForm required-validate">
+		
+		<div class="pageFormContent" layoutH="58">
 			
-			<noscript>
-				<div class="alert alert-block span10">
-					<h4 class="alert-heading">警告!</h4>
-					<p>你需要设置浏览器属性，启用 <a href="http://zhidao.baidu.com/link?url=QKMUIZG0TZgGAVBieVGq27S1nfsySMHeZn55coS1Wd22IuDzOBWNfzug6_nDfzb4Y6a4KvFeZXY43Ulz39bUfa" target="_blank">JavaScript</a> .</p>
-				</div>
-			</noscript>
-			
-			<div id="content" class="span10">
-			<!-- content starts -->
-			
-			
-			
-			
-
-			<div>
-				<ul class="breadcrumb">
-					<li>
-						<a href="#">账户设置</a>
-					</li>
-				</ul>
+			<div class="unit" id="realNamediv">
+				<label>真实姓名：</label>
+				<input  size="30" minlength="1" maxlength="20" class="required"  
+					id="realName" type="text" name="real_name" value="${sessionScope.CURRENT_LOGIN_USER.userName }" />
+			</div>
+			<div class="unit">
+				<label>登录名：</label>
+				<input  size="30" minlength="1" maxlength="20" disabled="disabled" 
+					id="loginName"  type="text" name="login_name" value="${sessionScope.CURRENT_LOGIN_USER.loginName }"  />
+			</div>
+			<div class="unit" id="oldpwddiv">
+				<label>旧密码：</label>
+				<!-- 这里增加 ajax 异步验证 -->
+				<input  size="30" minlength="3" maxlength="20" class="required alphanumeric" 
+					id="oldpwd" type="password"  name="oldPassword" value="" />
+			</div>
+			<div class="unit" id="newpwddiv">
+				<label>新密码：</label>
+				<input  size="30" minlength="3" maxlength="20" class="required alphanumeric" 
+					id="newpwd" type="password"  name="login_newpwd" />
+			</div>
+			<div class="unit" id="maildiv">
+				<label>用户邮箱：</label>
+				<input  size="30" minlength="2" maxlength="20" class="required" type="text" id="usermail" name="email"  value="${sessionScope.CURRENT_LOGIN_USER.email }">
+			</div>
+			<div class="unit" id="userphonediv">
+				<label>用户手机：</label>
+				<input  size="30" minlength="11" maxlength="11" class="required" type="text" id="userphone"  name="phone" value="${sessionScope.CURRENT_LOGIN_USER.userPhone }">
 			</div>
 			
-			
-			<div class="row-fluid sortable">
-				<div class="box span12">
-					<div class="box-header well" data-original-title>
-						<h2><i class="icon-edit"></i>修改账户信息</h2>
-						<div class="box-icon">
-							<a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-							<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-							<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-					    <!-- 修改账户信息表单 -->
-						<form class="form-horizontal" action="${base}/usertopEditPwd" method="post">
-							<fieldset>
-							  <div class="control-group" id="realNamediv">
-								<label class="control-label" for="realName">真实姓名</label>
-								<div class="controls">
-								  <input class="input-xlarge focused" id="realName" type="text" name="user_name" placeholder="请输入真实姓名" value="${sessionScope.CURRENT_LOGIN_USER.userName }">
-								</div>
-							  </div>
-							  
-							  <div class="control-group">
-								<label class="control-label" for="loginName">用户登录名</label>
-								<div class="controls">
-								  <input class="input-xlarge disabled" id="loginName" type="text" value="${sessionScope.CURRENT_LOGIN_USER.loginName }"  disabled="">
-								</div>
-							  </div>
-							  
-							  <div class="control-group" id="oldpwddiv">
-								<label class="control-label" for="oldpwd">用户原始密码</label>
-								<div class="controls">
-								  <!-- 这里增加 ajax 异步验证 -->
-								  <input class="input-xlarge focused" id="oldpwd" type="password"  value="" />
-								</div>
-							  </div>
-							  
-							  <div class="control-group" id="newpwddiv">
-								<label class="control-label" for="newpwd">用户更新密码</label>
-								<div class="controls">
-								  <input class="input-xlarge focused" id="newpwd" type="password"  name="login_newpwd" />	
-								</div>
-							  </div>
-							  
-							  <div class="control-group" id="maildiv">
-								<label class="control-label" for="usermail">用户邮箱</label>
-								<div class="controls">
-								  <div class="input-prepend">
-									<span class="add-on"><i class="icon-envelope"></i></span><input  size="28" type="text" id="usermail" name="email" value="${sessionScope.CURRENT_LOGIN_USER.email }">
-								  </div>
-								  <p class="help-block">该邮箱用于找回密码</p>
-								</div>
-							  </div>
-							  
-							  <div class="control-group" id="userphonediv">
-								<label class="control-label" for="userphone">用户手机</label>
-								<div class="controls">
-								  <div class="input-prepend">
-									<span class="add-on"><i class="icon-user"></i></span><input  size="28" type="text" id="userphone"  name="phone" value="${sessionScope.CURRENT_LOGIN_USER.userPhone }">
-								  </div>
-								  <p class="help-block">该邮箱用于接收短信验证码</p>
-								</div>
-							  </div>
-			
-							  <div class="form-actions">
-								<button class="btn">取消</button>
-							  	<button type="submit" class="btn btn-primary">修改</button>
-							  </div>
-							</fieldset>
-						  </form>
-					
-					</div>
-				</div><!--/span-->
-			
-			</div><!--/row-->
-					
-
-					<!-- content ends -->
-			</div><!--/#content.span10-->
-				</div><!--/fluid-row-->
-				
-		<hr>
-
-		
-		<jsp:include page="../footer.jsp"></jsp:include>
-	</div><!--/.fluid-container-->
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" id="sbbutton">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+</div>
 
 
-<!-- Message js lib -->	
-<script type="text/javascript" src="${base}/build/js/messenger.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 						//选择好弹出框的样式
@@ -147,20 +66,22 @@
 						var maildiv = $("#maildiv");           //邮箱 div
 						var userphonediv = $("#userphonediv"); //电话 div
 						
-						//---------------------------------
-						//提示输入旧密码
-						$("#oldpwd").focus(function(){
-						//alert("---------------3---------------");
-						$("#oldpwd").val("");
-							//$.globalMessenger().post({message : "旧密码不能为空!",hideAfter : 2,type : 'error',});
-							opwddiv.addClass("error");
-							return false;
-						});
+						//
+						var opwd = $("#oldpwd");
+						var rName = $("#realName");
+						var nPwd = $("#newpwd");
+						var uMail = $("#usermail");
+						var uPhone = $("#userphone");
 						
+						//提交按钮点击时，验证所有输入框
+						var allCFields = $([]).add(opwddiv).add(
+								realNamediv).add(newpwddiv)
+								.add(maildiv).add(userphonediv);
+						
+						//---------------------------------
 						$("#oldpwd").blur(function(){
 							//alert("---------------5---------------");
-							var opwd = $("#oldpwd").val();
-							if(opwd == ""){
+							if(opwd.val() == ""){
 								$.globalMessenger().post({
 									message : "旧密码不能为空!",
 									hideAfter : 3,
@@ -170,7 +91,7 @@
 								return false;
 							}else{
 								var logName = $("#loginName").val(); 
-								var opwd = $("#oldpwd").val();
+								//var opwd = $("#oldpwd").val();
 								////////
 								//异步请求，到服务器验证旧密码
 								$.ajax({
@@ -178,14 +99,13 @@
 									type:"post",
 									url:"${base}/userCheckOldPwd",
 									//手动提交数据
-									data:{"oldpwd":opwd,"oldname":logName},
+									data:{"oldpwd":opwd.val(),"oldname":logName},
 									//自动序列化表单中的数据
 									//data:$("#login_form").serialize(),
 									dataType:"json",
 									success:function(res){
 											//返回状态码 200 正确，201密码错误
-											var statucode = res.status;
-											if (res != "" && statucode == 200) {
+											if (res != "" && res == 200) {
 												$.globalMessenger().post({
 													message : "旧密码正确!",
 													hideAfter : 2,
@@ -193,7 +113,7 @@
 												});
 												opwddiv.addClass("success");
 											} 
-											if (res != "" && statucode == 201) {
+											if (res != "" && res == 300) {
 												$.globalMessenger().post({
 													message : "旧密码错误，请重新输入!",
 													hideAfter : 2,
@@ -224,109 +144,32 @@
 						});
 						
 						
-						//------------------------------------------
-						//验证用户姓名
-						$("#realName").blur(function(){
-							//alert("---------------6---------------");
-							var rName = $("#realName").val();
-							if(rName == ""){
-								$.globalMessenger().post({
-									message : "真实姓名不能为空!",
-									hideAfter : 3,
-									type : 'error',
-								});
-								realNamediv.addClass("error");
+						
+						//提交按钮脚本验证
+						$("#sbbutton").click(function(){
+							//输入验证
+							var bValid = true;
+							allCFields.removeClass("error");
+							
+							bValid = bValid && checkLength( rName,rName, "真实姓名", 1, 10 );
+							bValid = bValid && checkLength( opwd,opwddiv, "旧密码", 6, 12 );
+							bValid = bValid && checkLength( nPwd,newpwddiv, "新密码", 6, 12 );
+							bValid = bValid && checkLength( uPhone,userphonediv, "手机号码", 11, 11 );
+
+							bValid = bValid && checkRegexp( uPhone,userphonediv, /^\d*$/, "请输入手机号码" );									
+							//bValid = bValid && checkRegexp( c_eng_name, /^[a-z]([0-9a-z_])+$/i, "英文名称应该包含 a-z, 0-9, 下划线, 并且以字母开头." );
+							bValid = bValid && this.checkRegexp(uMail,maildiv,/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i,"例如. ui@qq.com");
+							//验证新旧密码一致
+							bValid = bValid && (opwd.val() == nPwd.val());
+							
+							if (!bValid) {
 								return false;
-							}else{
-								realNamediv.addClass("success");
+							} else {
+								$("#editsysUserform").submit();
+								return true;
 							}
+							
 						});
-						
-						
-						//------------------------------------------
-						//验证新密码
-						$("#newpwd").blur(function(){
-							var nPwd = $("#newpwd").val();
-							if(nPwd == ""){
-								$.globalMessenger().post({
-									message : "新密码不能为空!",
-									hideAfter : 3,
-									type : 'error',
-								});
-								newpwddiv.addClass("error");
-								return false;
-							}else{
-								newpwddiv.addClass("success");
-							}
-						});
-						
-						//------------------------------------------
-						//验证邮箱
-						$("#usermail").blur(function(){
-							var uMail = $("#usermail").val();
-							if(uMail == ""){
-								$.globalMessenger().post({
-									message : "邮箱不能为空!",
-									hideAfter : 3,
-									type : 'error',
-								});
-								maildiv.addClass("error");
-								return false;
-							}else{
-								/*
-								//var reg = "/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/";
-								var reg ="^[_a-z\d\-\./]+@[_a-z\d\-]+(\.[_a-z\d\-]+)*(\.(info|biz|com|edu|gov|net|am|bz|cn|cx|hk|jp|tw|vc|vn))$";
-								alert("ddd");
-								var flag = reg.test(uMail);
-								alert("flag   ="+flag);
-								if(!reg.test($.trim(uMail)))
-  								{
-   									$.globalMessenger().post({
-										message : "邮箱格式不对！",
-										hideAfter : 3,
-										type : 'error',
-									});
-									maildiv.addClass("error");
-   									return false;
-  								}else{
-									maildiv.addClass("success");
-								}*/
-								maildiv.addClass("success");
-  							}	
-  							
-						});
-						
-						
-						//------------------------------------------
-						//验证电话
-						$("#userphone").blur(function(){
-							var uPhone = $("#userphone").val();
-							if(uPhone == ""){
-								$.globalMessenger().post({
-									message : "手机号码不能为空!",
-									hideAfter : 3,
-									type : 'error',
-								});
-								userphonediv.addClass("error");
-								return false;
-							}else{
-								/*
-							    var reg = /^(?:13d|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|4|5|6|7|8|9])-?d{5}(d{3}|*{3})$/;
-  								if(!reg.test($.trim(uPhone)))
-  								{
-   									$.globalMessenger().post({
-										message : "手机号码格式不对！",
-										hideAfter : 3,
-										type : 'error',
-									});
-									userphonediv.addClass("error");
-   									return false;
-  								}
-  								*/
-  								userphonediv.addClass("success");
-							}
-						});
-						
 						
 						
 		});
@@ -334,6 +177,6 @@
 </script>
 		
 
+		
 
-</body>
-</html>
+	
