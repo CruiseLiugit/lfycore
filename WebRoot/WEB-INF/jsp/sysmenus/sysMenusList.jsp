@@ -33,7 +33,7 @@
 		</thead>
 		<tbody>
 		<c:forEach var="sysmenus" items="${sysmenuslist}">
-			<c:if test="${sysmenus.menuUrl != ''}">
+			<c:if test="${sysmenus.menuUrl != '#'}">
 				<tr>
 				<td>${sysmenus.menuName }</td>
 				<td>${sysmenus.levelId }</td>

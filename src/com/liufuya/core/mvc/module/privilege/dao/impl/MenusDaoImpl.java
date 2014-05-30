@@ -67,7 +67,9 @@ public class MenusDaoImpl extends BasicDao {
 					menu.setMenuUrl(rs.getString("MENU_URL"));
 					menu.setLevelId(rs.getString("LEVELID"));
 					menu.setSortValue(rs.getInt("SORTVALUE"));
-
+					
+					log.info("---->menuName = "+menu.getMenuName());
+					
 					list.add(menu);
 				}
 
@@ -211,7 +213,7 @@ public class MenusDaoImpl extends BasicDao {
 		sql.params().set("menuCode", (String)map.get("menuCode"));
 		sql.params().set("modelCode", (String)map.get("modelCode"));
 		sql.params().set("createDate", new Date());
-		log.info("插入权限表"+sql.toString());
+		log.info("插入sys_authorities:"+sql.toString());
 		
 		dao.execute(sql);
 	}

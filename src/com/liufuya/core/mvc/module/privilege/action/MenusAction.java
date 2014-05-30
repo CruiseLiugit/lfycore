@@ -133,18 +133,12 @@ public class MenusAction {
 			 log.info("增加菜单 menus paremtcode :"+menus.getFmenuCode());
 			 log.info("增加菜单 menus buttons :"+selectButtonIds);
 
-			// 1 适配器自动把页面数据，封装到 user 对象中
-			// 2 对比 界面 sysUserList.jsp 传递过来的密码，要进行 MD5加密
-			// user.setLogPwd(new MD5().getMD5ofStr(user.getLogPwd().intern()));
-			// 3 封装默认到参数
-			String uuid = UUID.randomUUID().toString();
 			
-
 			ReturnBean bean = new ReturnBean();
-			// 4 插入数据库
+			// 4 插入数据库,先插入 sys_menus ，再插入 sys_authorities
 			try {
 				// /////////////4月20日晚，暂时没有菜单模块，角色模块，所以暂停////////////////
-				// sysUserService.saveSysUser(user,relativedRoles);
+				menusService.saveMenus(request, menus, selectButtonIds);
 				// message = "新增系统用户成功";
 				bean.setStatusCode(DWZ.statusCode.ok);
 				// bean.setMessage(getText("msg.operation.success",request));
@@ -163,7 +157,6 @@ public class MenusAction {
 			
 			// 返回验证后的状态
 			String json = Json.toJson(bean);
-			// log.info(json);
 			return json;
 		}
 

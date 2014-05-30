@@ -37,7 +37,7 @@ public class LeftMenuAction {
 
 	@Inject("refer:menusServiceImpl")
 	public MenusServiceImpl menusService;
-	
+
 	@Inject("refer:roleServiceImpl")
 	public RoleServiceImpl roleServiceImpl;
 
@@ -61,7 +61,66 @@ public class LeftMenuAction {
 
 	// ---------------------左侧菜单-----------------------
 	/**
+	 * 1 工作台模块 跳转到 WEB-INF/jsp/desktop/mydesk.jsp
+	 * 
+	 * @param request
+	 */
+	@At("/m1_tomyDesk")
+	@Ok("jsp:jsp.1desktop.mydesk")
+	public void m1_tomyDesk() {
+
+	}
+
+	// ---------------------门店菜单-----------------------
+	/**
+	 * 2 门店所在城市
+	 * 
+	 * @param request
+	 */
+	@At("/m2_toCityList")
+	@Ok("jsp:jsp.2store.storeCityList")
+	public void m2_toCityList() {
+
+	}
+
+	/**
+	 * 2 已开门店列表 跳转到 WEB-INF/jsp/desktop/mydesk.jsp
+	 * 
+	 * @param request
+	 */
+	@At("/m2_toStoreList")
+	@Ok("jsp:jsp.2store.storeList")
+	public void m2_toStoreList() {
+
+	}
+
+	// ---------------------会员管理菜单-----------------------
+	/**
+	 * 5 实体卡导入，暂时取消该链接
+	 * 
+	 * @param request
+	 */
+	@At("/m5_importCartList")
+	@Ok("jsp:jsp.5member.storeCityList")
+	public void m5_importCartList() {
+
+	}
+
+	/**
+	 * 5 会员资料
+	 * 
+	 * @param request
+	 */
+	@At("/m5_memberInfoList")
+	@Ok("jsp:jsp.5member.memberInfoList")
+	public void m5_memberInfoList() {
+		
+	}
+
+	// -----------------------------------------
+	/**
 	 * 跳转到 用户管理 管理列表界面 sysUserList.jsp
+	 * 
 	 * @param request
 	 */
 	@At("/sysUserList")
@@ -84,7 +143,7 @@ public class LeftMenuAction {
 				Constants.MENUS_PAGE_SIZE);
 		request.setAttribute("sysmenuslist", menuslist);
 	}
-	
+
 	/**
 	 * 跳转到 角色管理列表界面 sysRoleList.jsp
 	 */
@@ -95,26 +154,25 @@ public class LeftMenuAction {
 		List<Role> rolelist = this.roleServiceImpl.quryAllRoleList(1,
 				Constants.ROLES_PAGE_SIZE);
 		request.setAttribute("sysroleslist", rolelist);
-		
-		//取出所有的按钮项目
-		//List<Button> buttonslist= menusService.getAllButtons();
-		//request.setAttribute("buttonlist", buttonslist);
+
+		// 取出所有的按钮项目
+		// List<Button> buttonslist= menusService.getAllButtons();
+		// request.setAttribute("buttonlist", buttonslist);
 	}
-	
-	
+
 	// ---------------------测试 jQuery Easy UI-----------------------
-		/**
-		 * 跳转到 用户管理 管理列表界面 sysUserList.jsp
-		 * @param request
-		 */
-		@At("/testjqui")
-		@Ok("jsp:jsp.testjqeasyui.list")
-		public void testjquiList(HttpServletRequest request) {
-			// 这里查询数据库，获取所有角色
-			List<Role> rolelist = this.roleServiceImpl.quryAllRoleList(1,
-					Constants.ROLES_PAGE_SIZE);
-			request.setAttribute("sysroleslist", rolelist);
-		}
-	
+	/**
+	 * 跳转到 用户管理 管理列表界面 sysUserList.jsp
+	 * 
+	 * @param request
+	 */
+	@At("/testjqui")
+	@Ok("jsp:jsp.testjqeasyui.list")
+	public void testjquiList(HttpServletRequest request) {
+		// 这里查询数据库，获取所有角色
+		List<Role> rolelist = this.roleServiceImpl.quryAllRoleList(1,
+				Constants.ROLES_PAGE_SIZE);
+		request.setAttribute("sysroleslist", rolelist);
+	}
 
 }

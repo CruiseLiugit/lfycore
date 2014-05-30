@@ -50,7 +50,7 @@ public class Menus implements Serializable{
 	private String status;
 
 	@Column("sortValue")
-	private int sortValue;
+	private int sortValue;  //排序字段
 	
 	
 	private String authCode;

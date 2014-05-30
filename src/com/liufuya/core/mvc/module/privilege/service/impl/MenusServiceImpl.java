@@ -151,10 +151,11 @@ public class MenusServiceImpl {
 				.getAttribute(Constants.CURRENT_LOGIN_USER); // 获取当前登陆的系统用户对象
 		if (StringUtils.isEmpty(menus.getMenuCode())) {
 			log.info("-------增加菜单--------");
-			String id = UUID.randomUUID().toString();
-			menus.setMenuCode(id);
+			String uuid = UUID.randomUUID().toString();
+			menus.setMenuCode(uuid);
 			menus.setCreateDate(new Date());
 			menus.setStatus("1");
+			menus.setSortValue(1);   //排序字段
 			menusDao.insertMenus(menus);
 		} else {
 			log.info("-------修改菜单--------");
