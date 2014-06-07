@@ -13,6 +13,8 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 
 import com.liufuya.common.Constants;
+import com.liufuya.core.mvc.module.member.model.MemberBean;
+import com.liufuya.core.mvc.module.member.service.impl.MemberServiceImpl;
 import com.liufuya.core.mvc.module.privilege.model.Button;
 import com.liufuya.core.mvc.module.privilege.model.Menus;
 import com.liufuya.core.mvc.module.privilege.model.Role;
@@ -40,6 +42,9 @@ public class LeftMenuAction {
 
 	@Inject("refer:roleServiceImpl")
 	public RoleServiceImpl roleServiceImpl;
+	
+	@Inject("refer:memberServiceImpl")
+	public MemberServiceImpl memberServiceImpl;
 
 	/**
 	 * 项目启动时的验证，搭建项目框架使用，返回当前系统时间
@@ -103,7 +108,7 @@ public class LeftMenuAction {
 	@At("/m5_importCartList")
 	@Ok("jsp:jsp.5member.storeCityList")
 	public void m5_importCartList() {
-
+		
 	}
 
 	/**
@@ -113,8 +118,11 @@ public class LeftMenuAction {
 	 */
 	@At("/m5_memberInfoList")
 	@Ok("jsp:jsp.5member.memberInfoList")
-	public void m5_memberInfoList() {
-		
+	public void m5_memberInfoList(HttpServletRequest request) {
+		//这里查询所有会员信息,lfy_member, lfy_member_address
+		List<MemberBean> list = memberServiceImpl.findAllMembers();
+		log.info("所有会员 list size = "+list.size());
+		request.setAttribute("memberslist", list);
 	}
 
 	// -----------------------------------------

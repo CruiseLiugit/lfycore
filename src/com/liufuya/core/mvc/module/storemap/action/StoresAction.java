@@ -40,13 +40,22 @@ public class StoresAction {
 	public MenusServiceImpl menusService;
 
 	// ************************************************************************************
+	// 门店资料管理，门店所在城市，增加  按钮点击后，跳转到 增加城市页面
+	@At("/m2_toStoreCityAdd")
+	@Ok("jsp:jsp.2store.storeCityAdd")
+	public void m2_toStoreCityAdd() {
+		
+	}
 
+	// ************************************************************************************
 	// 门店列表，高级搜索 按钮点击后，跳转到 高级搜索页面
 	@At("/m2_toStoreSearch")
 	@Ok("jsp:jsp.2store.storeSearch")
 	public void m2_toStoreSearch() {
-		
 	}
-
+	
+	
+	
+	
 
 }

@@ -6,7 +6,7 @@ var ioc ={
 			},
 			fields:{
 				driverClassName:"com.mysql.jdbc.Driver",
-				url:"jdbc:mysql://127.0.0.1:3306/lfycore?useUnicode=true&characterEncoding=UTF-8",
+				url:"jdbc:mysql://localhost:3306/shopdb?useUnicode=true&characterEncoding=UTF-8",
 				username:"root",
 				password:"",
 				initialSize : 10,

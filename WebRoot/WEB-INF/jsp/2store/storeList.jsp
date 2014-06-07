@@ -20,7 +20,20 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li><label>搜索门店名称：</label><input type="text"/></li>
-				<li><select class="combox" name="province" ref="w_combox_city"
+				
+				<li>地点:&nbsp; &nbsp;<b><span id="city">
+				<c:choose>
+					<c:when test="${checkedCity ne null }">
+						<c:out value="${checkedCity }"></c:out>
+					</c:when>
+					<c:otherwise>上海</c:otherwise>
+				</c:choose>
+				&nbsp; &nbsp;<a style="color:#2a70b8;" href="${base }/toChangeCitys" rel="changeCityes" target="dialog" width="600" height="450">[切换城市]</a>	</span></b></li>
+				<li>中心位置:&nbsp; &nbsp;<b><span id="city"><a style="color:#2a70b8;" href="${base }/toChangeCitys" rel="changeCityes" target="dialog" width="600" height="450">[地标]</a></span></b></li>
+				
+				<!-- 
+				<li>
+				<select class="combox" name="province" ref="w_combox_city"
 					refUrl="${base }/resources/citypart/city_{value}.html">
 					<option value="all">所有省市</option>
 					<option value="bj">北京</option>
@@ -32,6 +45,7 @@
 					<option value="all">所有区县</option>
 				</select>
 				</li>
+				 -->
 				<li></li>
 			</ul>
 

@@ -7,8 +7,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="留夫鸭,订餐系统,CRM,会员管理,积分管理系统.">
 	<meta name="author" content="刘立立,836131325@qq.com">
-
-	<!-- The styles
+	
+	
+	<!-- The styles 
 	<link id="bs-css" href="${base}/css/bootstrap-cerulean.css" rel="stylesheet">
 	<style type="text/css">
 	  body {
@@ -34,13 +35,13 @@
 	<link href='${base}/css/jquery.iphone.toggle.css' rel='stylesheet'>
 	<link href='${base}/css/opa-icons.css' rel='stylesheet'>
 	<link href='${base}/css/uploadify.css' rel='stylesheet'>
-	 -->
+	-->
 	
-	<!-- messenger css... -->
+	<!-- messenger css... 
 	<link href="${base}/build/css/messenger.css" rel="stylesheet" type="text/css" >
 	<link href="${base}/build/css/messenger-spinner.css" rel="stylesheet" type="text/css">
 	<link href="${base}/build/css/messenger-theme-air.css" rel="stylesheet" type="text/css">
-	
+	-->
 
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>

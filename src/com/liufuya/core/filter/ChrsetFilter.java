@@ -38,10 +38,6 @@ public class ChrsetFilter implements ActionFilter {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
 		return null;
 	}
 

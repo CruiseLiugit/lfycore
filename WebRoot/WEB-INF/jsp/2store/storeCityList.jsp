@@ -18,9 +18,11 @@
 	<form onsubmit="return navTabSearch(this);" action="demo_page1.html"
 		method="post">
 		<div class="searchBar">
+
 			<ul class="searchContent">
 				<li><label>搜索城市名称：</label><input type="text" />
 				</li>
+				<!--
 				<li><select class="combox" name="province" ref="w_combox_city"
 					refUrl="${base }/resources/citypart/city_{value}.html">
 						<option value="all">所有省市</option>
@@ -33,6 +35,7 @@
 				</select><select class="combox" name="area" id="w_combox_area">
 						<option value="all">所有区县</option>
 				</select></li>
+				-->
 				<li></li>
 			</ul>
 
@@ -52,8 +55,8 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="${base }/toCreateSysMenu"
-				rel="usersNav" target="dialog" width="600" height="500"><span>添加系统菜单</span>
+			<li><a class="add" href="${base }/m2_toStoreCityAdd"
+				rel="usersNav" target="dialog" width="600" height="500"><span>添加城市</span>
 			</a>
 			</li>
 			<li><a class="delete"
