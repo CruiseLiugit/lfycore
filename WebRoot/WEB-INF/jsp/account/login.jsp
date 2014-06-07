@@ -35,7 +35,7 @@
 	 -->
 	 
 	<link href="${base}/css/charisma-app.css" rel="stylesheet">
-	<!--
+	<!---->
 	<link href="${base}/css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
 	<link href='${base}/css/fullcalendar.css' rel='stylesheet'>
 	<link href='${base}/css/fullcalendar.print.css' rel='stylesheet'  media='print'>
@@ -50,7 +50,7 @@
 	<link href='${base}/css/jquery.iphone.toggle.css' rel='stylesheet'>
 	<link href='${base}/css/opa-icons.css' rel='stylesheet'>
 	<link href='${base}/css/uploadify.css' rel='stylesheet'>
-	 -->
+	 
 	
 	<!-- messenger css... -->
 	<link href="${base}/build/css/messenger.css" rel="stylesheet" type="text/css" >

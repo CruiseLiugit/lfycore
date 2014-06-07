@@ -51,14 +51,21 @@ public class MemberServiceImpl {
 		memberDao.insertMemberAddress(member_address);
 	}
 	
-
 	/**
 	 * 更新会员
 	 */
 	public boolean updateMember(Member member) throws Exception {
 		return memberDao.updateMember(member);
 	}
+	
+	/**
+	 * 更新会员地址
+	 */
+	public boolean updateMemberAddress(MemberAddress memberaddr) throws Exception {
+		return memberDao.updateMemberAddress(memberaddr);
+	}
 
+	
 	/**
 	 * 删除会员
 	 */
@@ -69,8 +76,16 @@ public class MemberServiceImpl {
 	/**
 	 * 通过会员Code获取会员
 	 */
-	public Member getMemberByCode(String memberCode) {
+	public List<MemberBean> getMemberByCode(String memberCode) {
 		return memberDao.getMemberByCode(memberCode);
+	}
+	
+	
+	/**
+	 * 通过会员Code获取会员
+	 */
+	public Member getMemberByMemberCode(String user_code){
+		return memberDao.getMemberByMemberCode(user_code);
 	}
 	
 	/**

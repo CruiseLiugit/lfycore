@@ -28,7 +28,7 @@ public class Member implements Serializable {
 	@Column("user_code")
 	private String user_code;
 
-	// 1.实体卡 2.网站注册 3.微信注册 4.app注册
+	// 1.实体卡 2.网站注册 3.微信注册 4.后台注册
 	@Column("user_type")
 	private String user_type;
 
@@ -76,11 +76,11 @@ public class Member implements Serializable {
 
 	// 会员卡余额 精确到分
 	@Column("memberCard_balance")
-	private String memberCard_balance;
+	private int memberCard_balance;
 
 	// 会员卡总积分
 	@Column("memberCard_score")
-	private String memberCard_score;
+	private int memberCard_score;
 
 	// 创建时间
 	@Column("create_date")
@@ -205,19 +205,21 @@ public class Member implements Serializable {
 		this.entityCardStatus = entityCardStatus;
 	}
 
-	public String getMemberCard_balance() {
+	
+
+	public int getMemberCard_balance() {
 		return memberCard_balance;
 	}
 
-	public void setMemberCard_balance(String memberCard_balance) {
+	public void setMemberCard_balance(int memberCard_balance) {
 		this.memberCard_balance = memberCard_balance;
 	}
 
-	public String getMemberCard_score() {
+	public int getMemberCard_score() {
 		return memberCard_score;
 	}
 
-	public void setMemberCard_score(String memberCard_score) {
+	public void setMemberCard_score(int memberCard_score) {
 		this.memberCard_score = memberCard_score;
 	}
 

@@ -44,11 +44,14 @@
 			</a></li>
 			<li><a class="add" href="${base }/m5_toCreateMember" rel="memberAdd"  target="dialog" width="600" height="440"><span>添加会员</span></a></li>
 			<li><a class="delete"
-				href="${base }/m5_deleteMember?uid={slt_memberid}" target="ajaxTodo"
+				href="${base }/m5_deleteMember?mid={slt_memberid}" target="ajaxTodo"  rel="module2_memberinfo"
 				title="确定要删除吗?"><span>删除</span> </a></li>
+				<li><a class="delete"
+				href="${base }/m5_disableMember?mid={slt_memberid}" target="ajaxTodo"  rel="module2_memberinfo"
+				title="确定要拉黑吗?"><span>拉黑</span> </a></li>
 			<li><a class="edit"
 				href="${base }/m5_toEditMember?mid={slt_memberid}" rel="usersNav"
-				target="dialog" width="600"><span>修改</span> </a></li>
+				target="dialog" width="600"  height="500"><span>修改</span> </a></li>
 			<li class="line">line</li>
 			<li><a class="icon" href="demo/common/dwz-team.xls"
 				target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span>
@@ -91,8 +94,8 @@
 									<c:when test="${member.usersex == 0 }">女</c:when>
 									<c:otherwise>金星</c:otherwise>
 								</c:choose></td>
-							<td>${member.defaultaddress }</td>
-							<td>${member.memberCardScore }</td>	
+							<td>${member.default_address }</td>
+							<td>${member.memberCard_score }</td>	
 							<td><c:choose>
 								<c:when test="${member.memberStatus == 0}"><span class="label label-success">删除</span></c:when>
 								<c:when test="${member.memberStatus == 1}"><span class="label label-success">正常</span></c:when>

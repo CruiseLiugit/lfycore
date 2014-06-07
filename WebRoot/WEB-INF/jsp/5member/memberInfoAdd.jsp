@@ -42,11 +42,11 @@
 			</div>
 			<div class="unit">
 				<label>所在城市：</label>
-				<input  name="member.city" type="text" size="30" alt="请输入所在城市" class="textInput"/>
+				<input class="required" name="member.city" type="text" size="30" alt="请输入所在城市"/>
 			</div>
 			<div class="unit">
 				<label>详细地址：</label>
-				<input  name="member.default_address" type="text" size="30" alt="如 xx市xx区xx路2号楼203室" class="textInput"/>
+				<input class="required"  name="member.default_address" type="text" size="30" alt="如 xx市xx区xx路2号楼203室" />
 			</div>
 			<div class="unit">
 				<label>实体卡号：</label>
