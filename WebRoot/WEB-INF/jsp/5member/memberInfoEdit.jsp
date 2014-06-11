@@ -116,6 +116,57 @@
 					<input type="radio" name="member.isavailable" value="0" checked="checked" />不可配送
 				</c:if>
 			</div>
+			
+			<div class="unit">
+				<label>年龄段：</label>
+				<select class="required combox" name="member.age_area">
+					<option value="0">请选择</option>
+					<c:forEach var="age" items="${ageList}">
+						<c:choose>
+							<c:when test="${member.age_area == age }">
+								<option value="${age }" selected>${age }</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${age }">${age }</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+			</div>
+			<div class="unit">
+				<label>职业：</label>
+				<select class="required combox" name="member.work_type">
+					<option value="0">请选择</option>
+					<c:forEach var="type" items="${worktypeList}">
+						<c:choose>
+							<c:when test="${member.work_type == type }">
+								<option value="${type }" selected>${type }</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${type }">${type }</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+			</div>
+			<div class="unit">
+				<label>家庭收入：</label>
+				<select class="required combox" name="member.family_money">
+					<option value="0">请选择</option>
+					<c:forEach var="fmoney" items="${fmoney_list}">
+						<c:choose>
+							<c:when test="${member.family_money == fmoney }">
+								<option value="${fmoney }" selected>${fmoney }</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${fmoney }">${fmoney }</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+			</div>
+			
+			
 			<div class="unit">
 				<label>实体卡号：</label>
 				<input  name="member.entityCardNumber" value="${member.entityCardNumber }" type="text" size="30" alt="请输入实体卡号码" class="textInput"/>
@@ -124,9 +175,28 @@
 				<label>实体状态：</label>
 				<select class="required combox" name="member.entityCardStatus">
 					<option value="0">请选择</option>
-					<option value="1" selected>已开卡</option>
-					<option value="2">已使用</option>
-					<option value="3">已作废</option>
+						<c:choose>
+							<c:when test="${member.entityCardStatus == 1 }">
+								<option value="1" selected>已开卡</option>
+								<option value="2">已使用</option>
+								<option value="3">已作废</option>
+							</c:when>
+							<c:when test="${member.entityCardStatus == 2 }">
+								<option value="1" >已开卡</option>
+								<option value="2" selected>已使用</option>
+								<option value="3">已作废</option>
+							</c:when>
+							<c:when test="${member.entityCardStatus == 3 }">
+								<option value="1" >已开卡</option>
+								<option value="2">已使用</option>
+								<option value="3" selected>已作废</option>
+							</c:when>
+							<c:otherwise>
+								<option value="1" selected>已开卡</option>
+								<option value="2">已使用</option>
+								<option value="3">已作废</option>
+							</c:otherwise>
+						</c:choose>
 				</select>
 			</div>
 			<div class="unit">

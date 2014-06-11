@@ -23,6 +23,11 @@ public class MemberBean {
 	private String city; // 所在城市
 	private String telphone; // 手机号码
 	private String email; // 邮箱
+	private String work_type; // 工作类型
+	private String age_area; // 年龄段
+	private String family_money; // 家庭收入
+	
+	
 	private String entityCardNumber; // 实体卡卡号
 	private String entityCardStatus; // 实体卡状态 1 已开卡 2 已使用 3 已作废
 	private int memberCard_balance;// 会员卡余额 精确到分
@@ -264,6 +269,30 @@ public class MemberBean {
 
 	public void setAid(int aid) {
 		this.aid = aid;
+	}
+
+	public String getWork_type() {
+		return work_type;
+	}
+
+	public void setWork_type(String work_type) {
+		this.work_type = work_type;
+	}
+
+	public String getAge_area() {
+		return age_area;
+	}
+
+	public void setAge_area(String age_area) {
+		this.age_area = age_area;
+	}
+
+	public String getFamily_money() {
+		return family_money;
+	}
+
+	public void setFamily_money(String family_money) {
+		this.family_money = family_money;
 	}
 	
 	

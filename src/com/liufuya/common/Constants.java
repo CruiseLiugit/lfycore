@@ -1,5 +1,8 @@
 package com.liufuya.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 公用静态类
@@ -38,7 +41,7 @@ public class Constants {
 	//存入验证码的 Session Name
 	public static final String VALIDATION_CODE = "validation_code";
 		
-	
+
 	/**
 	 * 一级菜单标记
 	 */
@@ -72,7 +75,54 @@ public class Constants {
 	 */
 	public static final String AUTH_TREE_ROOT_FLAG="";
 	
+	//-------------页面下拉框中固定的数据-------------------
+	public static List<String> age_area_list = new ArrayList<String>(); //年龄段
+	public static List<String> work_type_list = new ArrayList<String>(); //职业
+	public static List<String> family_money_list = new ArrayList<String>(); //家庭收入
 	
+	static{
+		//年龄段数据
+		age_area_list.add("60前");
+		age_area_list.add("60后");
+		age_area_list.add("70后");
+		age_area_list.add("80后");
+		age_area_list.add("90后");
+		age_area_list.add("00后");
+		age_area_list.add("10后");
+		
+		//职业数据
+		work_type_list.add("无职业");
+		work_type_list.add("科研人员");
+		work_type_list.add("律师/法务/合规");
+		work_type_list.add("教师");
+		work_type_list.add("医院/医疗/护理");
+		work_type_list.add("公务员");
+		work_type_list.add("在校学生");
+		work_type_list.add("翻译");
+		work_type_list.add("建筑装潢/市政建设");
+		work_type_list.add("行政/后勤");
+		work_type_list.add("互联网/电子商务/网游");
+		work_type_list.add("销售人员");
+		work_type_list.add("采购");
+		work_type_list.add("公关/媒介");
+		work_type_list.add("酒店/旅游");
+		work_type_list.add("计算机软件");
+		work_type_list.add("物流/仓储");
+		work_type_list.add("人力资源");
+		work_type_list.add("艺术/设计");
+		
+		//家庭收入
+		family_money_list.add("1000以下");
+		family_money_list.add("1000-3000");
+		family_money_list.add("3000-5000");
+		family_money_list.add("5000-10000");
+		family_money_list.add("10000-20000");
+		family_money_list.add("20000-50000");
+		family_money_list.add("50000以上");
+		
+	}
+	
+	//-------------------备用字段-------------------------
 	/***
 	 * 列表数据每页默认条数
 	 */
@@ -116,43 +166,7 @@ public class Constants {
 	 */
 	public static final int  POV_RUNNING_STATUS_TIME=40;
 	
-	/**
-	 * pov机在铺设点的使用状态 1 正常 2 暂停
-	 */
-	public static final String POV_USE_STATUS_NORMAL = "1";
-	public static final String POV_USE_STATUS_NORMAL_STR = "正常";
-	public static final String POV_USE_STATUS_PAUSE_STR = "暂停";
 	
-	/**
-	 * 铺设点状态 1 正常 2 暂停
-	 */
-	public static final String PAVE_STATUS_NORMAL = "1";
-	public static final String PAVE_STATUS_PAUSE = "2";
-	public static final String PAVE_STATUS_NORMAL_STR = "正常";
-	public static final String PAVE_STATUS_PAUSE_STR = "暂停";
-	/**
-	 * pov机的使用状态1 正常,2 暂停
-	 */
-	public static final String  POV_USE_STATUS_PAUSE="2";
-	public static final String  POV_USE_STATUS_RECOVER="1";
-	public static final String  POV_USE_STATUS_RELEVANCE="已关联"; 
-	public static final String  POV_USE_STATUS_RELIVE="暂停";
-	
-	/**
-	 * 铺设点操作类型 3 删除, 2 暂停 
-	 */
-	public static final String PAVE_OPERATE_DELETE = "3";
-	/**
-	 * POV添加方式 1 单个添加 2 批量添加
-	 */
-	public static final String WAREHOUSE_POV_ADD_SATUS="1";
-	public static final String WAREHOUSE_POV_ADD_LIST_SATUS="2";
-	/**
-	 * POV仓库管理状态 1 已入库  2 已出库 3维修中
-	 */
-	public static final String WAREHOUSE_POV_SATUS_IN="1";
-	public static final String WAREHOUSE_POV_SATUS_OUT="2";
-	public static final String WAREHOUSE_POV_SATUS_MAINTAIN="3";
 	
 	/**
 	 * 解析Excel保存在session中的KEY

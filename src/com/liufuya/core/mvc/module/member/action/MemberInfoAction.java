@@ -1,5 +1,6 @@
 package com.liufuya.core.mvc.module.member.action;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import com.liufuya.common.Constants;
 import com.liufuya.common.base.MD5;
 import com.liufuya.common.dwz.DWZ;
 import com.liufuya.common.dwz.ReturnBean;
@@ -100,7 +102,8 @@ public class MemberInfoAction {
 		String uuid2 = UUID.randomUUID().toString();
 		address.setAddress_code(uuid2);
 		address.setUser_code(uuid); // 用户 code
-		address.setCity(member.getCity());
+		address.setCity(member.getCity());  //城市
+		address.setArea(member.getCity_part());//城市区域
 		address.setAddress_keywords(member.getDefault_address());
 		// 调用百度地图查询 GPS 周围店铺 code 编号
 		Geocoding ge = null;
@@ -172,6 +175,11 @@ public class MemberInfoAction {
 		}
 
 		request.setAttribute("member_code", member_code);
+		// 页面下来框中需要的数据。通过 request 对象传递过去
+		//年龄段
+        request.setAttribute("ageList", Constants.age_area_list);
+        request.setAttribute("worktypeList", Constants.work_type_list);
+        request.setAttribute("fmoney_list", Constants.family_money_list);
 	}
 
 	// 修改会员页面点击，修改按钮
@@ -198,6 +206,9 @@ public class MemberInfoAction {
 		member.setCity(mb.getCity());
 		member.setTelphone(mb.getTelphone());
 		member.setEmail(mb.getEmail());
+		member.setAge_area(mb.getAge_area());
+		member.setWork_type(mb.getWork_type());
+		member.setFamily_money(mb.getFamily_money());
 		member.setEntityCardNumber(mb.getEntityCardNumber());
 		member.setEntityCardStatus(mb.getEntityCardStatus());
 		member.setMemberCard_balance(mb.getMemberCard_balance());

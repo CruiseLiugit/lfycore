@@ -64,6 +64,16 @@ public class Member implements Serializable {
 
 	@Column("email")
 	private String email;
+	
+	//工作类型
+	@Column("work_type")
+	private String work_type; 
+	//家庭收入
+	@Column("family_money")
+	private String family_money; 
+	//年龄段
+	@Column("age_area")
+	private String age_area; 
 
 	// 实体卡卡号
 	@Column("entityCardNumber")
@@ -90,7 +100,8 @@ public class Member implements Serializable {
 	@Column("status")
 	private String status;
 
-	private String default_address;
+	private String city_part;          //城区
+	private String default_address;    //地址
 	
 	
 	public long getId() {
@@ -246,6 +257,40 @@ public class Member implements Serializable {
 	public void setDefault_address(String default_address) {
 		this.default_address = default_address;
 	}
+
+	public String getWork_type() {
+		return work_type;
+	}
+
+	public void setWork_type(String work_type) {
+		this.work_type = work_type;
+	}
+
+	public String getFamily_money() {
+		return family_money;
+	}
+
+	public void setFamily_money(String family_money) {
+		this.family_money = family_money;
+	}
+
+	public String getAge_area() {
+		return age_area;
+	}
+
+	public void setAge_area(String age_area) {
+		this.age_area = age_area;
+	}
+
+	public String getCity_part() {
+		return city_part;
+	}
+
+	public void setCity_part(String city_part) {
+		this.city_part = city_part;
+	}
+	
+	
 
 	
 }

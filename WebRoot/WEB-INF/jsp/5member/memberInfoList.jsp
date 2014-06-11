@@ -43,15 +43,16 @@
 				rel="usersNav" target="dialog" width="400" height="280"><span>批量导入</span>
 			</a></li>
 			<li><a class="add" href="${base }/m5_toCreateMember" rel="memberAdd"  target="dialog" width="600" height="440"><span>添加会员</span></a></li>
+			<li><a class="edit"
+				href="${base }/m5_toEditMember?mid={slt_memberid}" rel="usersNav"
+				target="dialog" width="600"  height="500"><span>修改</span> </a></li>
 			<li><a class="delete"
 				href="${base }/m5_deleteMember?mid={slt_memberid}" target="ajaxTodo"  rel="module2_memberinfo"
 				title="确定要删除吗?"><span>删除</span> </a></li>
 				<li><a class="delete"
 				href="${base }/m5_disableMember?mid={slt_memberid}" target="ajaxTodo"  rel="module2_memberinfo"
 				title="确定要拉黑吗?"><span>拉黑</span> </a></li>
-			<li><a class="edit"
-				href="${base }/m5_toEditMember?mid={slt_memberid}" rel="usersNav"
-				target="dialog" width="600"  height="500"><span>修改</span> </a></li>
+			
 			<li class="line">line</li>
 			<li><a class="icon" href="demo/common/dwz-team.xls"
 				target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span>

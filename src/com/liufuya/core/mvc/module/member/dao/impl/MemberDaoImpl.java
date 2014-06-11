@@ -134,7 +134,7 @@ public class MemberDaoImpl extends BasicDao {
 	 */
 	public List<MemberBean> getMemberByCode(String memberCode) {
 		Sql sql = Sqls
-				.create("select m.id as mid,m.user_code as user_code,m.user_type as user_type,m.loginName as loginName,m.loginPwd as loginPwd,m.realName as realName,m.sex as sex,m.birthday as birthday,m.card_number as card_number,m.city as city,m.telphone as telphone,m.email as email,m.entityCardNumber as entityCardNumber,m.entityCardStatus as entityCardStatus,m.memberCard_balance as memberCard_balance,m.memberCard_score as memberCard_score,m.create_date as create_date,m.status as status,a.id as aid,a.address_code as address_code,a.area as area,a.address_keywords as address_keywords,a.gps_long as gps_long,a.gps_lat as gps_lat,a.available_shops as available_shops,a.is_available as is_available  from lfy_member m,lfy_member_address a  where m.user_code=a.user_code and a.is_default='1' and a.status='1'  and m.user_code=@memberCode");
+				.create("select m.id as mid,m.user_code as user_code,m.user_type as user_type,m.loginName as loginName,m.loginPwd as loginPwd,m.realName as realName,m.sex as sex,m.birthday as birthday,m.work_type as work_type,m.family_money as family_money,m.age_area as age_area,m.card_number as card_number,m.city as city,m.telphone as telphone,m.email as email,m.entityCardNumber as entityCardNumber,m.entityCardStatus as entityCardStatus,m.memberCard_balance as memberCard_balance,m.memberCard_score as memberCard_score,m.create_date as create_date,m.status as status,a.id as aid,a.address_code as address_code,a.area as area,a.address_keywords as address_keywords,a.gps_long as gps_long,a.gps_lat as gps_lat,a.available_shops as available_shops,a.is_available as is_available  from lfy_member m,lfy_member_address a  where m.user_code=a.user_code and a.is_default='1' and a.status='1'  and m.user_code=@memberCode");
 		sql.params().set("memberCode", memberCode);
 
 		// dao.execute(sql) 执行前，编写回调函数，解析 查询结果
@@ -157,6 +157,9 @@ public class MemberDaoImpl extends BasicDao {
 					menu.setEmail(rs.getString("email"));  // 邮箱
 					menu.setCard_number(rs.getString("card_number")); // 身份证号
 					menu.setCity(rs.getString("city")); //城市
+					menu.setWork_type(rs.getString("work_type"));//工作类型
+					menu.setFamily_money(rs.getString("family_money"));  //家庭收入
+					menu.setAge_area(rs.getString("age_area")); //年龄段
 					menu.setEntityCardNumber(rs.getString("entityCardNumber"));// 实体卡卡号
 					menu.setEntityCardStatus(rs.getString("entityCardStatus"));// 实体卡状态 1 已开卡 2 已使用 3 已作废
 					menu.setMemberCard_balance(rs.getInt("memberCard_balance"));// 会员卡余额 精确到分
